@@ -61,6 +61,7 @@ function Register() {
           <button className='bg-sky-600 text-white w-full py-2 px-6 text-center rounded-lg mt-6'>Ingresar</button>
         </div>
     </form>
+    
 </div>
   )
 }
