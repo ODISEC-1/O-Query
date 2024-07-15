@@ -55,6 +55,16 @@ function Register() {
               {errors.supervisor && <span className="text-red-500">{errors.supervisor.message}</span>}
             </div>
             <div className='relative mb-4'>
+              <GrUserManager className='absolute left-2 top-1/2 -translate-y-1/2 text-gray-500' />
+              <input 
+                type="text" 
+                className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg" 
+                placeholder='DNI Asesor'
+                {...register("Asesor", { required: "Asesor es requerido" })}
+              />
+              {errors.Asesor && <span className="text-red-500">{errors.Asesor.message}</span>}
+            </div>
+            <div className='relative mb-4'>
               <IoTimeOutline className='absolute left-2 top-1/2 -translate-y-1/2 text-gray-500' />
               <input 
                 type="datetime-local" 
@@ -74,16 +84,7 @@ function Register() {
               />
               {errors.fechaDesembolso && <span className="text-red-500">{errors.fechaDesembolso.message}</span>}
             </div>
-            <div className='relative mb-4'>
-              <GiReceiveMoney className='absolute left-2 top-1/2 -translate-y-1/2 text-gray-500' />
-              <input 
-                type="number" 
-                className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg" 
-                placeholder='Monto de Desembolso'
-                {...register("montoDesembolso", { required: "Monto de desembolso es requerido" })}
-              />
-              {errors.montoDesembolso && <span className="text-red-500">{errors.montoDesembolso.message}</span>}
-            </div>
+           
           </div>
 
           {
@@ -96,12 +97,12 @@ function Register() {
               <input 
                 type="text" 
                 className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg" 
-                placeholder='Nombres'
-                {...register("nombres", { required: "Nombres son requeridos" })}
+                placeholder='Nombre'
+                {...register("nombres", { required: "Nombre son requeridos" })}
               />
               {errors.nombres && <span className="text-red-500">{errors.nombres.message}</span>}
             </div>
-            <div className='relative mb-4'>
+            {/* <div className='relative mb-4'>
               <FaAddressBook className='absolute left-2 top-1/2 -translate-y-1/2 text-gray-500' />
               <input 
                 type="text" 
@@ -110,7 +111,7 @@ function Register() {
                 {...register("apellidos", { required: "Apellidos son requeridos" })}
               />
               {errors.apellidos && <span className="text-red-500">{errors.apellidos.message}</span>}
-            </div>
+            </div> */}
             <div className='relative mb-4'>
               <FaMoneyBillTrendUp className='absolute left-2 top-1/2 -translate-y-1/2 text-gray-500' />
               <input 
@@ -120,6 +121,16 @@ function Register() {
                 {...register("oferta", { required: "Oferta es requerido" })}
               />
               {errors.oferta && <span className="text-red-500">{errors.oferta.message}</span>}
+            </div>
+            <div className='relative mb-4'>
+              <GiReceiveMoney className='absolute left-2 top-1/2 -translate-y-1/2 text-gray-500' />
+              <input 
+                type="number" 
+                className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg" 
+                placeholder='Monto de Desembolso'
+                {...register("montoDesembolso", { required: "Monto de desembolso es requerido" })}
+              />
+              {errors.montoDesembolso && <span className="text-red-500">{errors.montoDesembolso.message}</span>}
             </div>
             <div className='relative mb-4'>
               <IoCellular className='absolute left-2 top-1/2 -translate-y-1/2 text-gray-500' />

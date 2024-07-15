@@ -18,6 +18,7 @@ const columns = [
   { field: 'MontoDesembolso', headerName: 'Monto Desembolso', type: 'number' },
   { field: 'JefeZonal', headerName: 'Jefe Zonal' },
   { field: 'Supervisor', headerName: 'Supervisor' },
+  { field: 'Asesor', headerName: 'DNI Asesor' },
   { field: 'Agencia', headerName: 'Agencia' },
   { field: 'FechaCorreo', headerName: 'Fecha Correo' },
   { field: 'FechaDesembolso', headerName: 'Fecha Desembolso' },
