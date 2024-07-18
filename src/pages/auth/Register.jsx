@@ -8,37 +8,55 @@ import { GrMapLocation, GrUserManager } from 'react-icons/gr';
 import { BsCalendar2Date } from 'react-icons/bs';
 import TablaRegistro from '../../components/TablaRegistro';
 import { useDispatch, useSelector } from 'react-redux';
-import { FetchDataByDNI } from '../../redux/features/Datos/DatoSlice';
+import { CreateDerivation, FetchDataByDNI } from '../../redux/features/Datos/DatoSlice';
+import Loading from '../../components/Loading';
 
 function Register() {
   const dispatch = useDispatch();
-  const { register, handleSubmit, watch, setValue, control, formState: { errors } } = useForm();
+  const { register, handleSubmit, watch, setValue, control,reset, formState: { errors } } = useForm();
   const dni = watch('dni');
   const dniData = useSelector((state) => state.DataDni);
+  const {status} = dniData
 
   useEffect(() => {
     if (dni && dni.length === 8) {
       dispatch(FetchDataByDNI(dni));
+    }else{
+       reset({nombre:'',oferta:'',numero:''});
+       
     }
-  }, [dni, dispatch]);
+  }, [dni, dispatch,reset]);
 
   useEffect(() => {
-    if (dniData.datoDni.busqueda) {
+    if (dniData.datoDni.busqueda ) {
       setValue('nombre', dniData.datoDni.busqueda.nombre);
       console.log(dniData.datoDni.busqueda.nombre)
       setValue('oferta', dniData.datoDni.busqueda.oferta);
+      setValue('numero', dniData.datoDni.busqueda.numero);
+    }else{
+      reset({nombre:'',oferta:'',numero:''});
     }
-  }, [dniData, setValue]);
+  }, [dniData, setValue,reset]);
+
+  useEffect(() => {
+    if (dni && dni.length !== 8) {
+      reset({ nombre: '', oferta: '' });
+    }
+  }, [dni, reset]);
 
   const onSubmit = (data) => {
+    dispatch(CreateDerivation(data))
     console.log(data);
+    reset()
   };
 
   return (
     <div className="w-full">
       <div className="bg-white p-8 rounded-lg w-full md:w-5/5 lg:w-3/3 mx-auto">
-        <div className="mb-10">
+        <div className="mb-10 flex-column items-center justify-center">
           <h1 className="text-3xl uppercase font-bold text-center">Registrar</h1>
+        { status !== 'loading' ? null: <Loading/> }
+        { status !== 'failed' ? null: (<span style={{color:'red'}}>no se encontro cliente</span>)}
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div className="flex flex-wrap -mx-2">
@@ -110,16 +128,19 @@ function Register() {
                 <FaUserTie className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
                 <input
                   type="text"
+                  disabled={dniData?.datoDni?.busqueda?.nombre ? true:false}
                   className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg"
                   placeholder="nombre"
                   {...register('nombre', { required: 'nombre es requerida' })}
                 />
+               
                 {errors.nombre && <span className="text-red-500">{errors.nombre.message}</span>}
               </div>
               <div className="relative mb-4">
                 <FaMoneyBillTrendUp className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
                 <input
                   type="text"
+                  disabled={dniData?.datoDni?.busqueda?.oferta ? true:false}
                   className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg"
                   placeholder="Oferta"
                   {...register('oferta', { required: 'Oferta es requerida' })}
@@ -129,8 +150,9 @@ function Register() {
               <div className="relative mb-4">
                 <GiReceiveMoney className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
                 <input
-                  type="number"
+                  type="text"
                   className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg"
+                 
                   placeholder="Monto de Desembolso"
                   {...register('montoDesembolso', { required: 'Monto de desembolso es requerido' })}
                 />
@@ -139,7 +161,7 @@ function Register() {
               <div className="relative mb-4">
                 <IoCellular className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
                 <input
-                  type="number"
+                  type="text"
                   className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg"
                   placeholder="Número"
                   {...register('numero', { required: 'Número es requerido' })}
