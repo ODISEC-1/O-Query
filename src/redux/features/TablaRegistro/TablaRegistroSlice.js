@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
+
+
 export const TablaRegistroSlice = createSlice({
   name: 'TablaRegistro',
   initialState: {
@@ -14,6 +17,7 @@ export const TablaRegistroSlice = createSlice({
       state.data = action.payload;
     },
   },
+
 });
 
 export const { setData } = TablaRegistroSlice.actions;

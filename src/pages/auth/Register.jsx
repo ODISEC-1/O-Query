@@ -10,6 +10,7 @@ import TablaRegistro from '../../components/TablaRegistro';
 import { useDispatch, useSelector } from 'react-redux';
 import { CreateDerivation, FetchDataByDNI } from '../../redux/features/Datos/DatoSlice';
 import Loading from '../../components/Loading';
+import {toast} from 'react-hot-toast';
 
 function Register() {
   const dispatch = useDispatch();
@@ -45,9 +46,16 @@ function Register() {
   }, [dni, reset]);
 
   const onSubmit = (data) => {
-    dispatch(CreateDerivation(data))
-    console.log(data);
-    reset()
+   const promise = dispatch(CreateDerivation(data)).unwrap();
+
+    toast.promise(
+      promise,{
+        loading:'Enviando Datos....',
+        success:'Datos enviados con exito!',
+        error:'Error al enviar los datos'
+      }
+    )
+    promise.then(()=>reset())
   };
 
   return (
