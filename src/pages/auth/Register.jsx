@@ -98,11 +98,11 @@ function Register() {
                   className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg"
                   placeholder="Agencia"
                   {...register('agencia', { required: 'Agencia es requerido' })}
-                > <option>Selecione Jefe Zonal</option>
+                > <option>Selecione Agencia</option>
                 {
                   DataJZ.datoAgencia.map((p)=>{
                    return(
-                    <option>{p.Nombre_JZ}</option>
+                    <option>{p.Agencia}</option>
                    ) 
                   })
                 }
