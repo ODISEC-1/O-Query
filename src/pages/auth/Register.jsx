@@ -8,18 +8,29 @@ import { GrMapLocation, GrUserManager } from 'react-icons/gr';
 import { BsCalendar2Date } from 'react-icons/bs';
 import TablaRegistro from '../../components/TablaRegistro';
 import { useDispatch, useSelector } from 'react-redux';
-import { CreateDerivation, FetchDataByDNI } from '../../redux/features/Datos/DatoSlice';
 import Loading from '../../components/Loading';
 import {toast} from 'react-hot-toast';
+import { CreateDerivation,FetchDataByDNI } from '../../redux/features/Datos/Thunk/Data';
+//import { Select } from '@mui/material';
+import { FetchAllAgencia, FetchAllJZ, FetchAllSuper } from '../../redux/features/Datos/Thunk/JefeZonal';
+
 
 function Register() {
   const dispatch = useDispatch();
   const { register, handleSubmit, watch, setValue, control,reset, formState: { errors } } = useForm();
   const dni = watch('dni');
   const dniData = useSelector((state) => state.DataDni);
+  const DataJZ = useSelector((stateJZ)=>stateJZ.JefeZonal);
   const {status} = dniData
 
+  useEffect(()=>{
+    dispatch(FetchAllJZ())
+    dispatch(FetchAllSuper())
+    dispatch(FetchAllAgencia())
+    console.log(DataJZ.datoJZ)
+  },[dispatch])
   useEffect(() => {
+   
     if (dni && dni.length === 8) {
       dispatch(FetchDataByDNI(dni));
     }else{
@@ -29,9 +40,9 @@ function Register() {
   }, [dni, dispatch,reset]);
 
   useEffect(() => {
+    
     if (dniData.datoDni.busqueda ) {
       setValue('nombre', dniData.datoDni.busqueda.nombre);
-      console.log(dniData.datoDni.busqueda.nombre)
       setValue('oferta', dniData.datoDni.busqueda.oferta);
       setValue('numero', dniData.datoDni.busqueda.numero);
     }else{
@@ -81,34 +92,58 @@ function Register() {
                 {errors.dni && <span className="text-red-500">{errors.dni.message}</span>}
               </div>
               <div className="relative mb-4">
+                <FaArchway className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
+                <select
+                  type="text"
+                  className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg"
+                  placeholder="Agencia"
+                  {...register('agencia', { required: 'Agencia es requerido' })}
+                > <option>Selecione Jefe Zonal</option>
+                {
+                  DataJZ.datoAgencia.map((p)=>{
+                   return(
+                    <option>{p.Nombre_JZ}</option>
+                   ) 
+                  })
+                }
+                </select>
+                {errors.agencia && <span className="text-red-500">{errors.agencia.message}</span>}
+              </div>
+              <div className="relative mb-4">
                 <GrMapLocation className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
-                <input
+                <select
                   type="text"
                   className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg"
                   placeholder="Jefe Zonal"
                   {...register('jefeZonal', { required: 'Jefe Zonal es requerido' })}
-                />
+                > <option>Selecione Jefe Zonal</option>
+                  {
+                    DataJZ.datoJZ.map((p)=>{
+                     return(
+                      <option>{p.Nombre_JZ}</option>
+                     ) 
+                    })
+                  }
+                </select>
                 {errors.jefeZonal && <span className="text-red-500">{errors.jefeZonal.message}</span>}
               </div>
               <div className="relative mb-4">
                 <GrUserManager className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
-                <input
+                <select
                   type="text"
                   className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg"
                   placeholder="Supervisor"
                   {...register('supervisor', { required: 'Supervisor es requerido' })}
-                />
+                > <option>Selecione Supervisor</option>
+                {
+                  DataJZ.datoSuper.map((p)=>{
+                   return(
+                    <option>{p.Nombre_Super}</option>
+                   ) 
+                  })
+                }
+                   </select>
                 {errors.supervisor && <span className="text-red-500">{errors.supervisor.message}</span>}
-              </div>
-              <div className="relative mb-4">
-                <GrUserManager className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
-                <input
-                  type="text"
-                  className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg"
-                  placeholder="DNI Asesor"
-                  {...register('Asesor', { required: 'Asesor es requerido' })}
-                />
-                {errors.Asesor && <span className="text-red-500">{errors.Asesor.message}</span>}
               </div>
               <div className="relative mb-4">
                 <IoTimeOutline className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
@@ -177,14 +212,14 @@ function Register() {
                 {errors.numero && <span className="text-red-500">{errors.numero.message}</span>}
               </div>
               <div className="relative mb-4">
-                <FaArchway className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
+                <GrUserManager className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
                 <input
                   type="text"
                   className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg"
-                  placeholder="Agencia"
-                  {...register('agencia', { required: 'Agencia es requerido' })}
+                  placeholder="DNI Asesor"
+                  {...register('Asesor', { required: 'Asesor es requerido' })}
                 />
-                {errors.agencia && <span className="text-red-500">{errors.agencia.message}</span>}
+                {errors.Asesor && <span className="text-red-500">{errors.Asesor.message}</span>}
               </div>
               <div>
                 <button type="submit" className="bg-sky-600 text-white w-full py-2 px-6 text-center rounded-lg mt-2">
