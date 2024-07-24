@@ -2,7 +2,9 @@ import React, { useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { setData, SelectData } from '../redux/features/TablaRegistro/TablaRegistroSlice';
+import { SelectData } from '../redux/features/TablaRegistro/TablaRegistroSlice';
+import { DataRegistro } from '../redux/features/TablaRegistro/Thunk/DataRegistro';
+import { exportToExcel } from '../services/ExportExel';
 
 const headlenButtonClick = (row) => {
   const { id } = row;
@@ -39,17 +41,26 @@ const columns = [
   },
 ];
 
-function TablaRegistro() {
+function TablaRegistro({update}) {
   const dispatch = useDispatch();
   const rows = useSelector(SelectData);
 
   useEffect(() => {
+    dispatch(DataRegistro());
+  }, [update,dispatch ]);
 
-    console.log(rows);
-  }, [dispatch, rows]);
+const HandleExport =()=>{
+  exportToExcel(rows,'Derivaciones.xlsx')
+}
 
   return (
     <div style={{ height: 400, width: '100%' }}>
+  <div style={{display:'flex',justifyContent:'center'}} >
+  <h1>TABLA DERIVACIONES</h1>
+</div>
+       <Button variant="contained" color="secondary" onClick={HandleExport} style={{ marginBottom: '10px' }}>
+       Descargar en Excel
+      </Button>
       <DataGrid
         rows={rows}
         columns={columns}

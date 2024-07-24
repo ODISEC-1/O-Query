@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { FaArchway, FaAddressCard, FaUserTie } from 'react-icons/fa';
 import { IoTimeOutline, IoCellular } from 'react-icons/io5';
@@ -22,6 +22,8 @@ function Register() {
   const dniData = useSelector((state) => state.DataDni);
   const DataJZ = useSelector((stateJZ)=>stateJZ.JefeZonal);
   const {status} = dniData
+
+  const [UpadateTable,SetUpadateTable] = useState(false) 
 
   useEffect(()=>{
     dispatch(FetchAllJZ())
@@ -66,7 +68,11 @@ function Register() {
         error:'Error al enviar los datos'
       }
     )
-    promise.then(()=>reset())
+    console.log(data)
+    promise.then(()=>{
+      reset()
+    SetUpadateTable(prev => !prev)
+    })
   };
 
   return (
@@ -102,7 +108,7 @@ function Register() {
                 {
                   DataJZ.datoAgencia.map((p)=>{
                    return(
-                    <option>{p.Agencia}</option>
+                    <option value={p.Id_Agencia}>{p.Agencia}</option>
                    ) 
                   })
                 }
@@ -120,7 +126,7 @@ function Register() {
                   {
                     DataJZ.datoJZ.map((p)=>{
                      return(
-                      <option>{p.Nombre_JZ}</option>
+                      <option value={p.id_JZ}>{p.Nombre_JZ}</option>
                      ) 
                     })
                   }
@@ -138,7 +144,7 @@ function Register() {
                 {
                   DataJZ.datoSuper.map((p)=>{
                    return(
-                    <option>{p.Nombre_Super}</option>
+                    <option value={p.id_Super}>{p.Nombre_Super}</option>
                    ) 
                   })
                 }
@@ -148,7 +154,7 @@ function Register() {
               <div className="relative mb-4">
                 <IoTimeOutline className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
                 <input
-                  type="datetime-local"
+                  type='datetime-local'
                   className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg"
                   placeholder="Hora de llegada del correo"
                   {...register('horaLlegadaCorreo', { required: 'Hora de llegada del correo es requerido' })}
@@ -231,7 +237,7 @@ function Register() {
         </form>
       </div>
       <br />
-      <TablaRegistro />
+      <TablaRegistro  update={UpadateTable}/>
     </div>
   );
 }

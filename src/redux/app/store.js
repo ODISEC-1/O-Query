@@ -8,6 +8,6 @@ export default configureStore({
       TablaRegistro:TablaRegistroReducer,
       DataDni: dataReducer,
       JefeZonal:DataSliceJZ
-
     },
+    
 });
