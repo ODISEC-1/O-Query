@@ -7,6 +7,7 @@ import { DataRegistro } from '../redux/features/TablaRegistro/Thunk/DataRegistro
 import { exportToExcel } from '../services/ExportExel';
 import axios from 'axios';
 import EditModal from './EditModal';
+import { OneDerivation } from '../redux/features/Datos/Thunk/Data';
 
 const TablaRegistro = ({ update }) => {
   const dispatch = useDispatch();
@@ -29,10 +30,7 @@ const TablaRegistro = ({ update }) => {
     setModalOpen(false);
   };
 
-  const handleSave = async (updatedData) => {
-    await axios.put(`http://localhost:3001/api/Derivation/${updatedData.id}`, updatedData);
-    dispatch(DataRegistro());
-  };
+
 
   const handleExport = () => {
     exportToExcel(rows, 'Derivaciones.xlsx');
@@ -96,7 +94,6 @@ const TablaRegistro = ({ update }) => {
           open={modalOpen}
           handleClose={handleClose}
           data={data}
-          handleSave={handleSave}
         />
       )}
     </div>

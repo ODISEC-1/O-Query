@@ -1,80 +1,194 @@
-import { Select } from "@mui/material";
+import { Select, MenuItem, TextField, Button, Box,Typography } from "@mui/material";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { UpdateDerivacion } from "../redux/features/Datos/Thunk/Data";
+import toast from "react-hot-toast";
+import { DataRegistro } from "../redux/features/TablaRegistro/Thunk/DataRegistro";
 
-const FormEdit = ({ data }) => {
+const FormEdit = ({ data, close }) => {
   const dispatch = useDispatch();
-  const { datoJZ } = useSelector((state) => state.JefeZonal);
+  const { datoJZ, datoSuper, datoAgencia } = useSelector((state) => state.JefeZonal);
 
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      id: data.Id_registro,
+      DNI_Cli: data.DNI_Cli,
+      Nombres: data.Nombres,
+      oferta: data.oferta,
+      montoDesem: data.montoDesem,
+      numero: data.numero,
+      agencia: data.agencia,
+      jefeZonal: data.jefeZonal,
+      supervisor: data.supervisor,
+      DniAsesor: data.DniAsesor,
+      FechaGestion: data.FechaGestion,
+      FechaDesem: data.FechaDesem,
+      FechaRegistro: data.FechaRegistro,
+      Id_Usuario: data.Id_Usuario,
+      FechaModificaion: data.FechaModificaion,
+      Id_Modificador: data.Id_Modificador
+    }
+  });
 
-  const { control, handleSubmit } = useForm();
+  const MapOptions = (data, valueKey, labelKey) => data.map((item) => ({ value: item[valueKey], label: item[labelKey] }));
 
-  const MapOptionsJZ = (data, valueKey, labelKey) =>
-    data.map((item) => ({ value: item[valueKey], label: item[labelKey] }));
-   console.log(data)
   const onSubmit = (formData) => {
-    console.log(formData);
-    
+    const EstructuraData = {
+      id: formData.id,
+      numero: formData.numero,
+      agencia: formData.agencia,
+      jefeZonal: formData.jefeZonal,
+      supervisor: formData.supervisor,
+      horaLlegadaCorreo: formData.FechaGestion,
+      fechaDesembolso: formData.FechaDesem,
+      montoDesembolso: formData.montoDesem,
+      Asesor: formData.DniAsesor
+    };
+     
+    const promise = dispatch(UpdateDerivacion(EstructuraData));
+    toast.promise(promise, {
+      loading: 'Enviando Datos....',
+      success: 'Datos enviados con éxito!',
+      error: 'Error al enviar los datos'
+    });
+    promise.then(() => {
+      close();
+      dispatch(DataRegistro())
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input type="text" value={data.DNI_Cli} readOnly />
+    <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h6" component="h2" sx={{ mb: 2, fontWeight: 'bold', color: '#1976d2' }}>
+          Detalles del Cliente
+        </Typography>
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="body1" sx={{ fontWeight: 'bold' }}>Nombres del Cliente:</Typography>
+          <Typography variant="body2">{data.Nombres}</Typography>
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="body1" sx={{ fontWeight: 'bold' }}>ID Registro:</Typography>
+          <Typography variant="body2">{data.Id_registro}</Typography>
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="body1" sx={{ fontWeight: 'bold' }}>DNI Cliente:</Typography>
+          <Typography variant="body2">{data.DNI_Cli}</Typography>
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="body1" sx={{ fontWeight: 'bold' }}>Oferta:</Typography>
+          <Typography variant="body2">{data.oferta}</Typography>
+        </Box>
+      </Box>
+      
+      <Controller
+        name="montoDesem"
+        control={control}
+        rules={{ required: 'El Monto de Desembolso es obligatorio' }}
+        render={({ field }) => (
+          <TextField {...field} label="Monto Desembolsado" variant="outlined" fullWidth error={!!errors.montoDesem} helperText={errors.montoDesem?.message} />
+        )}
+      />
+      <Controller
+        name="numero"
+        control={control}
+        render={({ field }) => (
+          <TextField {...field} label="Número" variant="outlined" fullWidth />
+        )}
+      />
       <Controller
         name="agencia"
         control={control}
-        rules={{ required: 'Jefe Zonal es requerido' }}
+        rules={{ required: 'La Agencia es obligatoria' }}
         render={({ field }) => (
-          <Select
-            {...field}
-            native
-            defaultValue={''}
-          >
-            <option value="" disabled>Seleccione Agencia</option>
-            {MapOptionsJZ(datoJZ, 'id_JZ', 'Nombre_JZ').map(option => (
-              <option key={option.value} value={option.value}>{option.label}</option>
+          <Select {...field} classNamePrefix="react-select" variant="outlined" fullWidth error={!!errors.agencia} helperText={errors.agencia?.message}>
+            <MenuItem value="" disabled>Seleccione Agencia</MenuItem>
+            {MapOptions(datoAgencia, 'Id_Agencia', 'Agencia').map(option => (
+              <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
             ))}
           </Select>
         )}
       />
-        <Controller
-        name="JefeZonaL"
+      <Controller
+        name="jefeZonal"
         control={control}
-        rules={{ required: 'Jefe Zonal es requerido' }}
+        rules={{ required: 'El Jefe Zonal es obligatorio' }}
         render={({ field }) => (
-          <Select
-            {...field}
-            native
-        
-          >
-            <option value={data.Id_JZ} disabled>{data.Nombre_JZ}</option>
-            {MapOptionsJZ(datoJZ, 'id_JZ', 'Nombre_JZ').map(option => (
-              <option key={option.value} value={option.value}>{option.label}</option>
+          <Select {...field} variant="outlined" fullWidth error={!!errors.jefeZonal} helperText={errors.jefeZonal?.message}>
+            <MenuItem value="" disabled>Seleccione Jefe Zonal</MenuItem>
+            {MapOptions(datoJZ, 'id_JZ', 'Nombre_JZ').map(option => (
+              <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
             ))}
           </Select>
         )}
       />
-        <Controller
-        name="agencia"
+      <Controller
+        name="supervisor"
         control={control}
-        rules={{ required: 'Agencia es requerido' }}
+        rules={{ required: 'El Supervisor es obligatorio' }}
         render={({ field }) => (
-          <Select
-            {...field}
-            native
-            defaultValue={''}
-          >
-            <option  disabled>Seleccione Agencia</option>
-            {MapOptionsJZ(datoJZ, 'id_JZ', 'Nombre_JZ').map(option => (
-              <option key={option.value} value={option.value}>{option.label}</option>
+          <Select {...field} variant="outlined" fullWidth error={!!errors.supervisor} helperText={errors.supervisor?.message}>
+            <MenuItem value="" disabled>Seleccione Supervisor</MenuItem>
+            {MapOptions(datoSuper, 'id_Super', 'Nombre_Super').map(option => (
+              <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
             ))}
           </Select>
         )}
       />
-      <p>{data.DNI_Cli}</p>
-      <button type="submit">Submit</button>
-    </form>
+      <Controller
+        name="DniAsesor"
+        control={control}
+        rules={{ required: 'El DNI del Asesor es obligatorio', maxLength: 8, minLength: 8 }}
+        render={({ field }) => (
+          <TextField {...field} label="DNI Asesor" variant="outlined" fullWidth error={!!errors.DniAsesor} helperText={errors.DniAsesor?.message} />
+        )}
+      />
+      <Controller
+        name="FechaGestion"
+        control={control}
+        render={({ field }) => {
+          const formatDateTime = (dateTime) => {
+            if (!dateTime) return "";
+            const date = new Date(dateTime);
+            date.setHours(date.getHours() + 5);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+          };
+
+          return (
+            <input
+              type="datetime-local"
+              value={formatDateTime(field.value)}
+              onChange={(e) => field.onChange(e.target.value)}
+              style={{ padding: '10px', borderRadius: '5px', border: '1px solid #1976d2', width: '100%' }}
+            />
+          );
+        }}
+      />
+      <Controller
+        name="FechaDesem"
+        control={control}
+        render={({ field }) => {
+          const dateValue = field.value ? new Date(field.value).toISOString().split("T")[0] : "";
+          return (
+            <input
+              type="date"
+              value={dateValue}
+              onChange={(e) => field.onChange(e.target.value)}
+              style={{ padding: '10px', borderRadius: '5px', border: '1px solid #1976d2', width: '100%' }}
+            />
+          );
+        }}
+      />
+      <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+        Submit
+      </Button>
+    </Box>
   );
 };
 
