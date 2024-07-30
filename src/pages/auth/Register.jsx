@@ -13,6 +13,7 @@ import { toast } from 'react-hot-toast';
 import { CreateDerivation, FetchDataByDNI } from '../../redux/features/Datos/Thunk/Data';
 import { FetchAllAgencia, FetchAllJZ, FetchAllSuper } from '../../redux/features/Datos/Thunk/JefeZonal';
 import Select from 'react-select';
+import { DataRegistro } from '../../redux/features/TablaRegistro/Thunk/DataRegistro';
 
 function Register() {
   const dispatch = useDispatch();
@@ -232,15 +233,15 @@ function Register() {
                 />
                 {errors.DNIAsesor && <span className="text-red-500">{errors.DNIAsesor.message}</span>}
               </div>
-            </div>
-          </div>
           <div className="mt-4">
             <button
               type="submit"
-              className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition duration-200"
+              className=" w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition duration-200"
             >
               Enviar
             </button>
+          </div>
+            </div>
           </div>
         </form>
       </div>

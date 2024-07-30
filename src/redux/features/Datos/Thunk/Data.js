@@ -35,8 +35,35 @@ export const FetchDataByDNI = createAsyncThunk(
         const { data, status, statusText, config } = createDeri;
         return { data, status, statusText, config }; 
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error post data:', error);
         throw error;
       }
     }
   );
+
+
+  export const UpdateDerivacion = createAsyncThunk('data/UpdateDerivacion',
+   async(dataUpdate,thunkAPI)=>{
+    try {
+      const Update = await axios.put(`http://localhost:3001/api/Derivation/${dataUpdate.id}`, dataUpdate)
+     const {data,status,statusText} = Update;
+     return {data,status,statusText}
+    } catch (error) {
+      console.error('Error update data:', error);
+      throw error;
+    }
+   }
+  )
+
+
+
+  export const OneDerivation =createAsyncThunk('data/UpdateDerivacion',async(id)=>{
+    try {
+      const {data} = await axios.get(`http://localhost:3001/api/Derivation/${id}`)
+      console.log(data) 
+      return data
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      throw error;
+    }
+  })

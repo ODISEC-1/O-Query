@@ -1,14 +1,18 @@
-import { Select, MenuItem, TextField, Button } from "@mui/material";
+import { Select, MenuItem, TextField, Button, Box,Typography } from "@mui/material";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { UpdateDerivacion } from "../redux/features/Datos/Thunk/Data";
+import toast from "react-hot-toast";
+import { DataRegistro } from "../redux/features/TablaRegistro/Thunk/DataRegistro";
 
-const FormEdit = ({ data }) => {
+const FormEdit = ({ data, close }) => {
   const dispatch = useDispatch();
   const { datoJZ, datoSuper, datoAgencia } = useSelector((state) => state.JefeZonal);
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
+      id: data.Id_registro,
       DNI_Cli: data.DNI_Cli,
       Nombres: data.Nombres,
       oferta: data.oferta,
@@ -31,10 +35,8 @@ const FormEdit = ({ data }) => {
 
   const onSubmit = (formData) => {
     const EstructuraData = {
-      nombre: formData.Nombres,
-      oferta: formData.oferta,
+      id: formData.id,
       numero: formData.numero,
-      dni: formData.DNI_Cli,
       agencia: formData.agencia,
       jefeZonal: formData.jefeZonal,
       supervisor: formData.supervisor,
@@ -43,53 +45,64 @@ const FormEdit = ({ data }) => {
       montoDesembolso: formData.montoDesem,
       Asesor: formData.DniAsesor
     };
-
-    console.log(EstructuraData);
-   
+     
+    const promise = dispatch(UpdateDerivacion(EstructuraData));
+    toast.promise(promise, {
+      loading: 'Enviando Datos....',
+      success: 'Datos enviados con éxito!',
+      error: 'Error al enviar los datos'
+    });
+    promise.then(() => {
+      close();
+      dispatch(DataRegistro())
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Controller
-        name="DNI_Cli"
-        control={control}
-        render={({ field }) => (
-          <TextField {...field} label="DNI Cliente" />
-        )}
-      />
-      <Controller
-        name="Nombres"
-        control={control}
-        render={({ field }) => (
-          <TextField {...field} label="Nombres" />
-        )}
-      />
-      <Controller
-        name="oferta"
-        control={control}
-        render={({ field }) => (
-          <TextField {...field} label="Oferta" />
-        )}
-      />
+    <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h6" component="h2" sx={{ mb: 2, fontWeight: 'bold', color: '#1976d2' }}>
+          Detalles del Cliente
+        </Typography>
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="body1" sx={{ fontWeight: 'bold' }}>Nombres del Cliente:</Typography>
+          <Typography variant="body2">{data.Nombres}</Typography>
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="body1" sx={{ fontWeight: 'bold' }}>ID Registro:</Typography>
+          <Typography variant="body2">{data.Id_registro}</Typography>
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="body1" sx={{ fontWeight: 'bold' }}>DNI Cliente:</Typography>
+          <Typography variant="body2">{data.DNI_Cli}</Typography>
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="body1" sx={{ fontWeight: 'bold' }}>Oferta:</Typography>
+          <Typography variant="body2">{data.oferta}</Typography>
+        </Box>
+      </Box>
+      
       <Controller
         name="montoDesem"
         control={control}
+        rules={{ required: 'El Monto de Desembolso es obligatorio' }}
         render={({ field }) => (
-          <TextField {...field} label="Monto Desembolsado" />
+          <TextField {...field} label="Monto Desembolsado" variant="outlined" fullWidth error={!!errors.montoDesem} helperText={errors.montoDesem?.message} />
         )}
       />
       <Controller
         name="numero"
         control={control}
         render={({ field }) => (
-          <TextField {...field} label="Número" />
+          <TextField {...field} label="Número" variant="outlined" fullWidth />
         )}
       />
       <Controller
         name="agencia"
         control={control}
+        rules={{ required: 'La Agencia es obligatoria' }}
         render={({ field }) => (
-          <Select {...field} label="Agencia">
+          <Select {...field} classNamePrefix="react-select" variant="outlined" fullWidth error={!!errors.agencia} helperText={errors.agencia?.message}>
             <MenuItem value="" disabled>Seleccione Agencia</MenuItem>
             {MapOptions(datoAgencia, 'Id_Agencia', 'Agencia').map(option => (
               <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
@@ -100,8 +113,9 @@ const FormEdit = ({ data }) => {
       <Controller
         name="jefeZonal"
         control={control}
+        rules={{ required: 'El Jefe Zonal es obligatorio' }}
         render={({ field }) => (
-          <Select {...field} label="Jefe Zonal">
+          <Select {...field} variant="outlined" fullWidth error={!!errors.jefeZonal} helperText={errors.jefeZonal?.message}>
             <MenuItem value="" disabled>Seleccione Jefe Zonal</MenuItem>
             {MapOptions(datoJZ, 'id_JZ', 'Nombre_JZ').map(option => (
               <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
@@ -112,8 +126,9 @@ const FormEdit = ({ data }) => {
       <Controller
         name="supervisor"
         control={control}
+        rules={{ required: 'El Supervisor es obligatorio' }}
         render={({ field }) => (
-          <Select {...field} label="Supervisor">
+          <Select {...field} variant="outlined" fullWidth error={!!errors.supervisor} helperText={errors.supervisor?.message}>
             <MenuItem value="" disabled>Seleccione Supervisor</MenuItem>
             {MapOptions(datoSuper, 'id_Super', 'Nombre_Super').map(option => (
               <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
@@ -124,28 +139,56 @@ const FormEdit = ({ data }) => {
       <Controller
         name="DniAsesor"
         control={control}
+        rules={{ required: 'El DNI del Asesor es obligatorio', maxLength: 8, minLength: 8 }}
         render={({ field }) => (
-          <TextField {...field} label="DNI Asesor" />
+          <TextField {...field} label="DNI Asesor" variant="outlined" fullWidth error={!!errors.DniAsesor} helperText={errors.DniAsesor?.message} />
         )}
       />
       <Controller
         name="FechaGestion"
         control={control}
-        render={({ field }) => (
-          <TextField {...field} label="Fecha de Gestión" />
-        )}
+        render={({ field }) => {
+          const formatDateTime = (dateTime) => {
+            if (!dateTime) return "";
+            const date = new Date(dateTime);
+            date.setHours(date.getHours() + 5);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+          };
+
+          return (
+            <input
+              type="datetime-local"
+              value={formatDateTime(field.value)}
+              onChange={(e) => field.onChange(e.target.value)}
+              style={{ padding: '10px', borderRadius: '5px', border: '1px solid #1976d2', width: '100%' }}
+            />
+          );
+        }}
       />
       <Controller
         name="FechaDesem"
         control={control}
         render={({ field }) => {
-          console.log(field)
-          return(
-         <input type="date" value={field.value}/>
-        )}}
+          const dateValue = field.value ? new Date(field.value).toISOString().split("T")[0] : "";
+          return (
+            <input
+              type="date"
+              value={dateValue}
+              onChange={(e) => field.onChange(e.target.value)}
+              style={{ padding: '10px', borderRadius: '5px', border: '1px solid #1976d2', width: '100%' }}
+            />
+          );
+        }}
       />
-      <Button type="submit">Submit</Button>
-    </form>
+      <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+        Submit
+      </Button>
+    </Box>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal as MuiModal, Box, Typography, Button, TextField } from '@mui/material';
+import { Modal as MuiModal, Box, Typography } from '@mui/material';
 import FormEdit from './FormEdit';
 
 const style = {
@@ -7,28 +7,25 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  maxWidth: '90%', 
+  width: '100%',
   bgcolor: 'background.paper',
-  border: '2px solid #000',
+  border: 'none',
   boxShadow: 24,
+  borderRadius: '10px',
+  maxHeight: '80vh', 
+  overflow: 'auto', 
   p: 4,
 };
 
 const EditModal = ({ open, handleClose, data, handleSave }) => {
   const [formData, setFormData] = useState(data);
-   
+
   useEffect(() => {
     setFormData(data);
-    console.log(data)
   }, [data]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleSubmit = () => {
-    handleSave(formData);
+  const Close = () => {
     handleClose();
   };
 
@@ -40,10 +37,10 @@ const EditModal = ({ open, handleClose, data, handleSave }) => {
       aria-describedby="modal-description"
     >
       <Box sx={style}>
-        <Typography id="modal-title" variant="h6" component="h2">
-          Editar Derivacion
+        <Typography id="modal-title" variant="h6" component="h2" sx={{ mb: 2, textAlign: 'center', fontWeight: 'bold', color: '#1976d2' }}>
+          Editar Derivación
         </Typography>
-     <FormEdit data={data}/> 
+        <FormEdit data={data} close={Close} />
       </Box>
     </MuiModal>
   );

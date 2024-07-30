@@ -1,12 +1,12 @@
 import { createSlice} from '@reduxjs/toolkit';
-import { FetchDataByDNI } from './Thunk/Data';
+import { FetchDataByDNI, UpdateDerivacion } from './Thunk/Data';
 
 
 const initialState = {
   datoDni: [],
   status: 'idle',
   error: null,
-
+  
 };
 
 
