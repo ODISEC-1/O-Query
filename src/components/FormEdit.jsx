@@ -15,7 +15,7 @@ const FormEdit = ({ data }) => {
    console.log(data)
   const onSubmit = (formData) => {
     console.log(formData);
-    // Aquí puedes despachar alguna acción o manejar el envío del formulario
+    
   };
 
   return (
