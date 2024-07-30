@@ -44,9 +44,6 @@ const EditModal = ({ open, handleClose, data, handleSave }) => {
           Editar Derivacion
         </Typography>
      <FormEdit data={data}/> 
-        <Button onClick={handleSubmit} variant="contained" color="primary">
-          Save
-        </Button>
       </Box>
     </MuiModal>
   );
