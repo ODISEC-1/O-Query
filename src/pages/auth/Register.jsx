@@ -44,6 +44,7 @@ function Register() {
       setValue('nombre', dniData.datoDni.busqueda.nombre);
       setValue('oferta', dniData.datoDni.busqueda.oferta);
       setValue('numero', dniData.datoDni.busqueda.numero);
+      setValue('verificacion',dniData.datoDni.verificado)
     } else {
       reset({ nombre: '', oferta: '', numero: '' });
     }
@@ -92,6 +93,7 @@ function Register() {
         <div className="mb-10 flex-column items-center justify-center">
           <h1 className="text-3xl uppercase font-bold text-center">Registrar</h1>
           {status !== 'loading' ? null : <Loading />}
+          {dniData.datoDni.verificado && status !== 'loading' ? <span>Ya registrado </span> :<span>No registrado Antes </span> }
           {status !== 'failed' ? null : (<span style={{ color: 'red' }}>no se encontro cliente</span>)}
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
