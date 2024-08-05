@@ -21,7 +21,7 @@ const TablaRegistro = ({ update }) => {
 
   const handleButtonClick = async (row) => {
     const { id } = row;
-    const { data } = await axios.get(`https://apirena-production.up.railway.app/Derivation/${id}`);
+    const { data } = await axios.get(`https://apirena-production.up.railway.app/api/Derivation/${id}`);
     setData(data);
     setModalOpen(true);
   };
