@@ -15,7 +15,7 @@ export const FetchDataByDNI = createAsyncThunk(
     'data/fetchDataByDNI',
     async (dni) => {
       try {
-        const { data } = await fetchDataWithTimeout(`http://localhost:3001/api/Alldata/${dni}`);
+        const { data } = await fetchDataWithTimeout(`https://apirena-production.up.railway.app/api/Alldata/${dni}`);
         console.log(data);
         return data;
       } catch (error) {
@@ -30,7 +30,7 @@ export const FetchDataByDNI = createAsyncThunk(
     'data/CreateDerivation',
     async (dta, thunkAPI) => {
       try {
-        const createDeri = await axios.post('http://localhost:3001/api/Derivation', dta);
+        const createDeri = await axios.post('https://apirena-production.up.railway.app/api/Derivation', dta);
 
         const { data, status, statusText, config } = createDeri;
         return { data, status, statusText, config }; 
@@ -45,7 +45,7 @@ export const FetchDataByDNI = createAsyncThunk(
   export const UpdateDerivacion = createAsyncThunk('data/UpdateDerivacion',
    async(dataUpdate,thunkAPI)=>{
     try {
-      const Update = await axios.put(`http://localhost:3001/api/Derivation/${dataUpdate.id}`, dataUpdate)
+      const Update = await axios.put(`https://apirena-production.up.railway.app/api/Derivation/${dataUpdate.id}`, dataUpdate)
      const {data,status,statusText} = Update;
      return {data,status,statusText}
     } catch (error) {
@@ -59,7 +59,7 @@ export const FetchDataByDNI = createAsyncThunk(
 
   export const OneDerivation =createAsyncThunk('data/UpdateDerivacion',async(id)=>{
     try {
-      const {data} = await axios.get(`http://localhost:3001/api/Derivation/${id}`)
+      const {data} = await axios.get(`https://apirena-production.up.railway.app/api/Derivation/${id}`)
       console.log(data) 
       return data
     } catch (error) {

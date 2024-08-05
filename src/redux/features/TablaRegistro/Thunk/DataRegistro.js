@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const DataRegistro = createAsyncThunk('Registro/DataRegistro', async () => {
   try {
-    const { data } = await axios.get('http://localhost:3001/api/Derivation');
+    const { data } = await axios.get('https://apirena-production.up.railway.app/api/Derivation');
     const transformedData = data.map(item => {
          
       
