@@ -18,7 +18,7 @@ export const Login = () => {
             <input type="Password" className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg" placeholder='Contraseña'/>
             </div>
             <div>
-              <button className='bg-sky-600 text-white w-full py-2 px-6 text-center rounded-lg mt-6'><Link to={'/DerivacionesRegistro'}>Ingresar</Link></button>
+            <Link to={'/DerivacionesRegistro'}> <button className='bg-sky-600 text-white w-full py-2 px-6 text-center rounded-lg mt-6'>Ingresar</button></Link>
             </div>
         </form>
     </div>
