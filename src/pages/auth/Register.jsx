@@ -54,7 +54,26 @@ function Register() {
     if (dni && dni.length !== 8) {
       reset({ nombre: '', oferta: '' });
     }
+ 
   }, [dni, reset]);
+
+  const VeriBusque =(status,loading,succeeded,rejected)=>{
+     console.log(status)
+     let timestatus = status
+    if(timestatus === 'loading'){
+      return(
+        loading
+      )
+    }else if(timestatus === 'succeeded'){
+      return succeeded
+    }else{
+      if (timestatus === '') {
+        return(<span style={{ color: 'red' }}>{rejected}</span>)
+      }else{
+        return null
+      }
+    }
+  };
 
   const onSubmit = (data) => {
 
@@ -92,8 +111,7 @@ function Register() {
       <div className="bg-white p-8 rounded-lg w-full md:w-5/5 lg:w-3/3 mx-auto">
         <div className="mb-10 flex-column items-center justify-center">
           <h1 className="text-3xl uppercase font-bold text-center">Registrar</h1>
-          {status !== 'loading' ? null : <Loading />}
-          {status !== 'failed' ? null : (<span style={{ color: 'red' }}>no se encontro cliente</span>)}
+          {VeriBusque(status,<Loading />,null,'no se encontro cliente')}
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div className="flex flex-wrap -mx-2">

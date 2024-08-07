@@ -1,52 +1,77 @@
-.dots-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 50%;
-    width: 50%;
+.loader3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bars {
+  width: 10px;
+  height: 20px;
+  margin: 0 2px;
+  border-radius: 4px;
+  animation: loader3 3s ease-in-out infinite;
+}
+
+.bar1 {
+  background-color: #4285F4;
+  animation-delay: -0.8s;
+}
+
+.bar2 {
+  background-color: #4285F4;
+  animation-delay: -0.7s;
+}
+
+.bar3 {
+  background-color: #4285F4;
+  animation-delay: -0.6s;
+}
+
+.bar4 {
+  background-color: #4285F4;
+  animation-delay: -0.5s;
+}
+
+.bar5 {
+  background-color: #4285F4;
+  animation-delay: -0.4s;
+}
+
+.bar6 {
+  background-color: #4285F4;
+  animation-delay: -0.3s;
+}
+
+.bar7 {
+  background-color: #4285F4;
+  animation-delay: -0.2s;
+}
+
+.bar8 {
+  background-color: #4285F4;
+  animation-delay: -0.1s;
+}
+
+.bar9 {
+  background-color: #4285F4;
+  animation-delay: 0s;
+}
+
+.bar10 {
+  background-color: #4285F4;
+  animation-delay: 0.1s;
+}
+
+@keyframes loader3 {
+  0% {
+    transform: scale(1);
   }
-  
-  .dot {
-    height: 20px;
-    width: 20px;
-    margin-right: 10px;
-    border-radius: 10px;
-    background-color: #b3d4fc;
-    animation: pulse 1.5s infinite ease-in-out;
+
+  20% {
+    transform: scale(1, 2.32);
   }
-  
-  .dot:last-child {
-    margin-right: 0;
+
+  40% {
+    transform: scale(1);
   }
-  
-  .dot:nth-child(1) {
-    animation-delay: -0.3s;
-  }
-  
-  .dot:nth-child(2) {
-    animation-delay: -0.1s;
-  }
-  
-  .dot:nth-child(3) {
-    animation-delay: 0.1s;
-  }
-  
-  @keyframes pulse {
-    0% {
-      transform: scale(0.8);
-      background-color: #b3d4fc;
-      box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
-    }
-  
-    50% {
-      transform: scale(1.2);
-      background-color: #6793fb;
-      box-shadow: 0 0 0 10px rgba(178, 212, 252, 0);
-    }
-  
-    100% {
-      transform: scale(0.8);
-      background-color: #b3d4fc;
-      box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
-    }
-  }
+}

@@ -30,9 +30,8 @@ const dataSlice = createSlice({
         state.datoDni = action.payload;
       })
       .addCase(FetchDataByDNI.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
-        state.datoDni = []; 
+        state.loading = 'failed';
+        state.error = 'Hubo un error al obtener los datos';
       });
   },
 });

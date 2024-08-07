@@ -3,27 +3,36 @@ import axios from 'axios';
 
 
 const fetchDataWithTimeout = (url, timeout = 5000) => {
-    return Promise.race([
-      axios.get(url),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Request timed out')), timeout)
-      )
-    ]);
-  };
+  return Promise.race([
+    axios.get(url),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Request timed out')), timeout)
+    )
+  ]);
+};
 
 export const FetchDataByDNI = createAsyncThunk(
-    'data/fetchDataByDNI',
-    async (dni) => {
-      try {
-        const { data } = await fetchDataWithTimeout(`https://apirena-production.up.railway.app/api/Alldata/${dni}`);
-        console.log(data);
-        return data;
-      } catch (error) {
+  'data/fetchDataByDNI',
+  async (dni, { rejectWithValue }) => {
+    try {
+      const { data } = await fetchDataWithTimeout(`https://apirena-production.up.railway.app/api/Alldata/${dni}`, 5000);
+      console.log(data);
+      return data;
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+
+        return rejectWithValue('No se encontraron datos para el DNI proporcionado');
+      } else if (error.message === 'Request timed out') {
+
+        return rejectWithValue('La solicitud ha superado el tiempo de espera');
+      } else {
+
         console.error('Error fetching data:', error);
-        throw error;
+        return rejectWithValue('Hubo un error al obtener los datos');
       }
     }
-  );
+  }
+);
 
 
   export const CreateDerivation = createAsyncThunk(
