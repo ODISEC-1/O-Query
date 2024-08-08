@@ -15,9 +15,11 @@ export const FetchDataByDNI = createAsyncThunk(
   'data/fetchDataByDNI',
   async (dni, { rejectWithValue }) => {
     try {
-      const { data } = await fetchDataWithTimeout(`https://apirena-production.up.railway.app/api/Alldata/${dni}`, 5000);
-      console.log(data);
+      const { data,status } = await axios.get(`https://apirena-production.up.railway.app/api/Alldata/${dni}`);
+      if (data) {
       return data;
+      }
+      
     } catch (error) {
       if (error.response && error.response.status === 404) {
 

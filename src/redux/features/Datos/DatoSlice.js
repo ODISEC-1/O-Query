@@ -16,7 +16,7 @@ const dataSlice = createSlice({
   reducers: {
     clearData(state) {
       state.datoDni = [];
-      state.status = 'idle';
+      state.status = '';
       state.error = null;
     }
   },
@@ -31,6 +31,7 @@ const dataSlice = createSlice({
       })
       .addCase(FetchDataByDNI.rejected, (state, action) => {
         state.loading = 'failed';
+        state.datoDni = []
         state.error = 'Hubo un error al obtener los datos';
       });
   },

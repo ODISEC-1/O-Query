@@ -8,12 +8,12 @@ import { GrMapLocation, GrUserManager } from 'react-icons/gr';
 import { BsCalendar2Date } from 'react-icons/bs';
 import TablaRegistro from '../../components/TablaRegistro';
 import { useDispatch, useSelector } from 'react-redux';
-import Loading from '../../components/Loading';
 import { toast } from 'react-hot-toast';
 import { CreateDerivation, FetchDataByDNI } from '../../redux/features/Datos/Thunk/Data';
 import { FetchAllAgencia, FetchAllJZ, FetchAllSuper } from '../../redux/features/Datos/Thunk/JefeZonal';
 import Select from 'react-select';
 import { DataRegistro } from '../../redux/features/TablaRegistro/Thunk/DataRegistro';
+import LoadingHandler from '../../components/LoadingHandler';
 
 function Register() {
   const dispatch = useDispatch();
@@ -56,25 +56,6 @@ function Register() {
     }
  
   }, [dni, reset]);
-
-  const VeriBusque =(status,loading,succeeded,rejected)=>{
-     console.log(status)
-     let timestatus = status
-    if(timestatus === 'loading'){
-      return(
-        loading
-      )
-    }else if(timestatus === 'succeeded'){
-      return succeeded
-    }else{
-      if (timestatus === '') {
-        return(<span style={{ color: 'red' }}>{rejected}</span>)
-      }else{
-        return null
-      }
-    }
-  };
-
   const onSubmit = (data) => {
 
     console.log(data)
@@ -111,7 +92,7 @@ function Register() {
       <div className="bg-white p-8 rounded-lg w-full md:w-5/5 lg:w-3/3 mx-auto">
         <div className="mb-10 flex-column items-center justify-center">
           <h1 className="text-3xl uppercase font-bold text-center">Registrar</h1>
-          {VeriBusque(status,<Loading />,null,'no se encontro cliente')}
+          <LoadingHandler status={status} succeeded={null} rejected="No se encontro cliente"/>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div className="flex flex-wrap -mx-2">
@@ -263,7 +244,7 @@ function Register() {
             </div>
           </div>
         </form>
-        {dniData.datoDni.verificado  ? <span>Ya registrado </span> :<span>No registrado Antes </span> }
+        {dniData.datoDni.verificado  ? <span>Ya registrado <br /><span><sub>si desea editarlo buscar en la tabla 👇</sub></span></span> :<span>No registrado Antes</span> }
       </div>
       <div className="flex justify-center">
         <TablaRegistro updateTable={UpadateTable} />

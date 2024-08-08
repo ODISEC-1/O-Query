@@ -33,7 +33,8 @@ const TablaRegistro = ({ update }) => {
 
 
   const handleExport = () => {
-    exportToExcel(rows, 'Derivaciones.xlsx');
+
+  exportToExcel(rows, 'Derivaciones.xlsx');
   };
 
   const columns = [
