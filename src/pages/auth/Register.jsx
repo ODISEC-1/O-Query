@@ -70,7 +70,7 @@ function Register() {
     horaLlegadaCorreo: data?.horaLlegadaCorreo,
     fechaDesembolso:data?.fechaDesembolso ,
     montoDesembolso:data?.montoDesembolsar ,
-    Asesor:data?.DNIAsesor
+    Asesor:String(data?.DNIAsesor)
     }
     console.log(EstructuraData)
     const promise = dispatch(CreateDerivation(EstructuraData)).unwrap();
@@ -226,17 +226,23 @@ function Register() {
               <div className="relative mb-4">
               <FaAddressCard className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
                 <input
-                  type="text"
+                  type="number"
                   className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg"
                   placeholder="DNIAsesor"
-                  {...register('DNIAsesor', { required: 'DNI Asesor es requerido' })}
+                  {...register('DNIAsesor', {
+                    required: 'DNI Asesor es requerido',
+                    pattern: {
+                      value: /^\d{8}$/,
+                      message: 'El DNI debe contener exactamente 8 dígitos'
+                    }
+                  })}
                 />
                 {errors.DNIAsesor && <span className="text-red-500">{errors.DNIAsesor.message}</span>}
               </div>
           <div className="mt-4">
             <button
               type="submit"
-              className=" w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition duration-200"
+              className=" w-full bg-sky-600 hover:bg-sky-800 text-white py-2 rounded-lg transition duration-200"
             >
               Enviar
             </button>
@@ -244,7 +250,7 @@ function Register() {
             </div>
           </div>
         </form>
-        {dniData.datoDni.verificado  ? <span>Ya registrado <br /><span><sub>si desea editarlo buscar en la tabla 👇</sub></span></span> :<span>No registrado Antes</span> }
+        {dniData.datoDni.verificado  ? <span >Ya registrado ✅<br /><span style={{color:'red'}}><sub>si desea editarlo busque en la tabla 👇</sub></span></span> :<span>No registrado Antes</span> }
       </div>
       <div className="flex justify-center">
         <TablaRegistro updateTable={UpadateTable} />

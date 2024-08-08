@@ -73,13 +73,18 @@ const TablaRegistro = ({ update }) => {
         <h1>TABLA DERIVACIONES</h1>
       </div>
       <Button
-        variant="contained"
-        color="secondary"
-        onClick={handleExport}
-        style={{ marginBottom: '10px' }}
-      >
-        Descargar en Excel
-      </Button>
+  variant="contained"
+  onClick={handleExport}
+  sx={{
+    marginBottom: '10px',
+    bgcolor: '#0284c7', 
+    '&:hover': {
+      bgcolor: '#0078c1', 
+    },
+  }}
+>
+  Descargar en Excel
+</Button>
       <DataGrid
         rows={rows}
         columns={columns}
