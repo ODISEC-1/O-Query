@@ -57,8 +57,6 @@ function Register() {
  
   }, [dni, reset]);
   const onSubmit = (data) => {
-
-    console.log(data)
     const EstructuraData={
       nombre: data?.nombre,
     oferta: data?.oferta,
