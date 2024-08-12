@@ -7,17 +7,22 @@ import { DataRegistro } from '../redux/features/TablaRegistro/Thunk/DataRegistro
 import { exportToExcel } from '../services/ExportExel';
 import axios from 'axios';
 import EditModal from './EditModal';
-import { OneDerivation } from '../redux/features/Datos/Thunk/Data';
+import { DeleteDerivacion } from '../redux/features/Datos/Thunk/Data';
+import DeleteModal from './DeleteModal';
 
 const TablaRegistro = ({ updateTable }) => {
   const dispatch = useDispatch();
   const rows = useSelector(SelectData);
   const [data, setData] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpenDelete, setModalOpenDelete] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [triggerUpdate, setTriggerUpdate] = useState(false);
+
 
   useEffect(() => {
     dispatch(DataRegistro());
-  }, [updateTable, dispatch]);
+  }, [updateTable, dispatch,triggerUpdate]);
 
   const handleButtonClick = async (row) => {
     const { id } = row;
@@ -30,11 +35,29 @@ const TablaRegistro = ({ updateTable }) => {
     setModalOpen(false);
   };
 
+  const handleButtonClickModalDelete = (row) => {
+    setSelectedRow(row);
+    setModalOpenDelete(true);
+  };
 
+  const onConfirm = async () => {
+    const { id } = selectedRow;
+    try {
+      await dispatch(DeleteDerivacion(id)).unwrap(); 
+      setTriggerUpdate((prev) => !prev); 
+    } catch (error) {
+      console.error('Error eliminando la derivación:', error);
+    } finally {
+      setModalOpenDelete(false);
+    }
+  };
+
+  const handleCloseDeleteModal = () => {
+    setModalOpenDelete(false);
+  };
 
   const handleExport = () => {
-
-  exportToExcel(rows, 'Derivaciones.xlsx');
+    exportToExcel(rows, 'Derivaciones.xlsx');
   };
 
   const columns = [
@@ -65,20 +88,20 @@ const TablaRegistro = ({ updateTable }) => {
       ),
     },
     {
-      field:'Eliminar',
-      headerName:'Eliminar',
-      width:'150',
-      renderCell:()=>(
+      field: 'Eliminar',
+      headerName: 'Eliminar',
+      width: 150,
+      renderCell: (params) => (
         <Button
-         variant='contained'
-         color='error'
-         size='medium'
-
+          variant='contained'
+          color='error'
+          size='medium'
+          onClick={() => handleButtonClickModalDelete(params.row)}
         >
-        Eliminar
+          Eliminar
         </Button>
-      ) 
-    }
+      ),
+    },
   ];
 
   return (
@@ -87,18 +110,18 @@ const TablaRegistro = ({ updateTable }) => {
         <h1>TABLA DERIVACIONES</h1>
       </div>
       <Button
-  variant="contained"
-  onClick={handleExport}
-  sx={{
-    marginBottom: '10px',
-    bgcolor: '#0284c7', 
-    '&:hover': {
-      bgcolor: '#0078c1', 
-    },
-  }}
->
-  Descargar en Excel
-</Button>
+        variant="contained"
+        onClick={handleExport}
+        sx={{
+          marginBottom: '10px',
+          bgcolor: '#0284c7',
+          '&:hover': {
+            bgcolor: '#0078c1',
+          },
+        }}
+      >
+        Descargar en Excel
+      </Button>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -116,6 +139,11 @@ const TablaRegistro = ({ updateTable }) => {
           data={data}
         />
       )}
+      <DeleteModal
+        open={modalOpenDelete}
+        handleClose={handleCloseDeleteModal}
+        onConfirm={onConfirm}
+      />
     </div>
   );
 };

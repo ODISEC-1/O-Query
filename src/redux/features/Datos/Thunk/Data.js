@@ -71,10 +71,23 @@ export const FetchDataByDNI = createAsyncThunk(
   export const OneDerivation =createAsyncThunk('data/UpdateDerivacion',async(id)=>{
     try {
       const {data} = await axios.get(`https://apirena-production.up.railway.app/api/Derivation/${id}`)
-      console.log(data) 
       return data
     } catch (error) {
       console.error('Error fetching data:', error);
       throw error;
     }
   })
+
+
+  export const DeleteDerivacion = createAsyncThunk(
+    'data/DeleteDerivacion',
+    async (id) => {
+      try {
+        const response = await axios.delete(`https://apirena-production.up.railway.app/api/Derivation/${id}`);
+        return response.data;
+      } catch (error) {
+        console.error('Error deleting data:', error);
+        throw error;
+      }
+    }
+  );
