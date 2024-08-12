@@ -9,7 +9,7 @@ import axios from 'axios';
 import EditModal from './EditModal';
 import { OneDerivation } from '../redux/features/Datos/Thunk/Data';
 
-const TablaRegistro = ({ update }) => {
+const TablaRegistro = ({ updateTable }) => {
   const dispatch = useDispatch();
   const rows = useSelector(SelectData);
   const [data, setData] = useState(null);
@@ -17,7 +17,7 @@ const TablaRegistro = ({ update }) => {
 
   useEffect(() => {
     dispatch(DataRegistro());
-  }, [update, dispatch]);
+  }, [updateTable, dispatch]);
 
   const handleButtonClick = async (row) => {
     const { id } = row;
@@ -64,6 +64,21 @@ const TablaRegistro = ({ update }) => {
         </Button>
       ),
     },
+    {
+      field:'Eliminar',
+      headerName:'Eliminar',
+      width:'150',
+      renderCell:()=>(
+        <Button
+         variant='contained'
+         color='error'
+         size='medium'
+
+        >
+        Eliminar
+        </Button>
+      ) 
+    }
   ];
 
   return (
