@@ -107,7 +107,8 @@ const TablaRegistro = ({ updateTable }) => {
   return (
     <div style={{ height: 400, width: '100%' }}>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <h1>TABLA DERIVACIONES</h1>
+      <h1 className="text-2xl font-bold text-center p-4">TABLA DERIVACIONES</h1>
+
       </div>
       <Button
         variant="contained"

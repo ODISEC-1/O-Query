@@ -50,15 +50,11 @@ function Register() {
     }
   }, [dniData, setValue, reset]);
 
-  useEffect(() => {
-    if (dni && dni.length !== 8) {
-      reset({ nombre: '', oferta: '' });
-    }
- 
-  }, [dni, reset]);
+  
+
   const onSubmit = (data) => {
     const EstructuraData={
-      nombre: data?.nombre,
+    nombre: data?.nombre,
     oferta: data?.oferta,
     numero: data?.numero,
     dni: data?.dni,
@@ -66,11 +62,11 @@ function Register() {
     jefeZonal:data?.jefeZonal?.value,
     supervisor: data?.supervisor?.value,
     horaLlegadaCorreo: data?.horaLlegadaCorreo,
-    fechaDesembolso:data?.fechaDesembolso ,
-    montoDesembolso:data?.montoDesembolsar ,
+    fechaDesembolso:data?.fechaDesembolso,
+    montoDesembolso:data?.montoDesembolsar,
     Asesor:String(data?.DNIAsesor)
     }
-    console.log(EstructuraData)
+  
     const promise = dispatch(CreateDerivation(EstructuraData)).unwrap();
     toast.promise(promise, {
       loading: 'Enviando Datos....',

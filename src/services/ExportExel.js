@@ -15,12 +15,12 @@ export const exportToExcel = (data, fileName = 'derivaciones.xlsx') => {
     Supervisor: String(item.Supervisor),
     Asesor: String(item.Asesor),
     FechaCorreo: moment(item.FechaCorreo).format('DD-MM-YYYY HH:mm:ss'), 
-    FechaDesembolso: moment(item.FechaDesembolso).format('DD/MM/YYYY') // Formatear la fecha en formato deseado
+    FechaDesembolso: moment(item.FechaDesembolso).format('DD/MM/YYYY') 
   }));
 
   const worksheet = XLSX.utils.json_to_sheet(structuredData);
 
-  // Aplicar formato para la columna DNI
+ 
   const range = XLSX.utils.decode_range(worksheet['!ref']);
   for (let C = range.s.c; C <= range.e.c; ++C) {
     const cellAddress = XLSX.utils.encode_cell({ c: C, r: 0 });
@@ -28,13 +28,13 @@ export const exportToExcel = (data, fileName = 'derivaciones.xlsx') => {
       for (let R = range.s.r + 1; R <= range.e.r; ++R) {
         const cell = worksheet[XLSX.utils.encode_cell({ c: C, r: R })];
         if (cell) {
-          cell.z = '@'; // Formato de texto
+          cell.z = '@'; 
         }
       }
     }
   }
 
-  // Aplicar formato para la columna Asesor
+
   const rangeAse = XLSX.utils.decode_range(worksheet['!ref']);
   for (let C = rangeAse.s.c; C <= rangeAse.e.c; ++C) {
     const cellAddress = XLSX.utils.encode_cell({ c: C, r: 0 });
@@ -42,7 +42,7 @@ export const exportToExcel = (data, fileName = 'derivaciones.xlsx') => {
       for (let R = rangeAse.s.r + 1; R <= rangeAse.e.r; ++R) {
         const cell = worksheet[XLSX.utils.encode_cell({ c: C, r: R })];
         if (cell) {
-          cell.z = '@'; // Formato de texto
+          cell.z = '@'; 
         }
       }
     }

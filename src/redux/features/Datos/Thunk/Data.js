@@ -2,14 +2,7 @@ import {createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 
-const fetchDataWithTimeout = (url, timeout = 5000) => {
-  return Promise.race([
-    axios.get(url),
-    new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Request timed out')), timeout)
-    )
-  ]);
-};
+
 
 export const FetchDataByDNI = createAsyncThunk(
   'data/fetchDataByDNI',
