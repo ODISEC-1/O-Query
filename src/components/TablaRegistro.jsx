@@ -38,7 +38,7 @@ const TablaRegistro = ({ update }) => {
   };
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'FechaCorreo', headerName: 'Fecha Correo' },
     { field: 'DNI', headerName: 'DNI' },
     { field: 'NombreCompleto', headerName: 'Nombre Completo', width: 130 },
     { field: 'Numero', headerName: 'Numero' },
@@ -48,7 +48,6 @@ const TablaRegistro = ({ update }) => {
     { field: 'Supervisor', headerName: 'Supervisor' },
     { field: 'Asesor', headerName: 'DNI Asesor' },
     { field: 'Agencia', headerName: 'Agencia' },
-    { field: 'FechaCorreo', headerName: 'Fecha Correo' },
     { field: 'FechaDesembolso', headerName: 'Fecha Desembolso' },
     {
       field: 'Editar',
