@@ -50,8 +50,6 @@ function Register() {
     }
   }, [dniData, setValue, reset]);
 
-  
-
   const onSubmit = (data) => {
     const EstructuraData={
     nombre: data?.nombre,
@@ -78,6 +76,16 @@ function Register() {
       SetUpadateTable(prev => !prev);
     });
   };
+
+  const EstadoRegistro = ()=>{
+    if (dni && dni.length === 8) {
+       if (dniData.datoDni.verificado === true) {
+           return( <span >Ya registrado ✅<br /><span style={{color:'red'}}><sub>si desea editarlo busque en la tabla 👇</sub></span></span>)
+       }else{
+         return(<span>No registrado Antes</span>)
+       }
+    }
+  } 
 
   const mapOptions = (data, valueKey, labelKey) => data.map((item) => ({ value: item[valueKey], label: item[labelKey] }));
 
@@ -244,7 +252,8 @@ function Register() {
             </div>
           </div>
         </form>
-        {dniData.datoDni.verificado  ? <span >Ya registrado ✅<br /><span style={{color:'red'}}><sub>si desea editarlo busque en la tabla 👇</sub></span></span> :<span>No registrado Antes</span> }
+        {EstadoRegistro()}
+        {/* {dniData.datoDni.verificado  ? : } */}
       </div>
       <div className="flex justify-center">
         <TablaRegistro updateTable={UpadateTable} />
