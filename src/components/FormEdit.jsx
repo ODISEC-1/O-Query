@@ -1,4 +1,4 @@
-import { Select, MenuItem, TextField, Button, Box,Typography } from "@mui/material";
+import { Select, MenuItem, TextField, Button, Box, Typography } from "@mui/material";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,12 @@ import { DataRegistro } from "../redux/features/TablaRegistro/Thunk/DataRegistro
 const FormEdit = ({ data, close }) => {
   const dispatch = useDispatch();
   const { datoJZ, datoSuper, datoAgencia } = useSelector((state) => state.JefeZonal);
+
+  const addFiveHours = (dateString) => {
+    const date = new Date(dateString);
+    date.setHours(date.getHours() + 5);
+    return date.toISOString();
+  };
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
@@ -22,7 +28,7 @@ const FormEdit = ({ data, close }) => {
       jefeZonal: data.jefeZonal,
       supervisor: data.supervisor,
       DniAsesor: data.DniAsesor,
-      FechaGestion: data.FechaGestion,
+      FechaGestion: addFiveHours(data.FechaGestion),
       FechaDesem: data.FechaDesem,
       FechaRegistro: data.FechaRegistro,
       Id_Usuario: data.Id_Usuario,
@@ -31,8 +37,15 @@ const FormEdit = ({ data, close }) => {
     }
   });
 
-  const MapOptions = (data, valueKey, labelKey) => data.map((item) => ({ value: item[valueKey], label: item[labelKey] }));
+  // Mapped function for Select Options
+  const mapOptions = (data, valueKey, labelKey) => {
+    return data.map((item) => ({
+      value: item[valueKey],
+      label: item[labelKey],
+    }));
+  };
 
+  // Submit handler
   const onSubmit = (formData) => {
     const EstructuraData = {
       id: formData.id,
@@ -43,21 +56,23 @@ const FormEdit = ({ data, close }) => {
       horaLlegadaCorreo: formData.FechaGestion,
       fechaDesembolso: formData.FechaDesem,
       montoDesembolso: formData.montoDesem,
-      Asesor: formData.DniAsesor
+      Asesor: formData.DniAsesor,
     };
-     
+
     const promise = dispatch(UpdateDerivacion(EstructuraData));
     toast.promise(promise, {
-      loading: 'Enviando Datos....',
+      loading: 'Enviando Datos...',
       success: 'Datos enviados con éxito!',
       error: 'Error al enviar los datos'
     });
+
     promise.then(() => {
       close();
-      dispatch(DataRegistro())
+      dispatch(DataRegistro());
     });
   };
 
+  // Render the component
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       <Box sx={{ mb: 4 }}>
@@ -81,20 +96,32 @@ const FormEdit = ({ data, close }) => {
           <Typography variant="body2">{data.oferta}</Typography>
         </Box>
       </Box>
-      
+
       <Controller
         name="montoDesem"
         control={control}
         rules={{ required: 'El Monto de Desembolso es obligatorio' }}
         render={({ field }) => (
-          <TextField {...field} label="Monto Desembolsado" variant="outlined" fullWidth error={!!errors.montoDesem} helperText={errors.montoDesem?.message} />
+          <TextField
+            {...field}
+            label="Monto Desembolsado"
+            variant="outlined"
+            fullWidth
+            error={!!errors.montoDesem}
+            helperText={errors.montoDesem?.message}
+          />
         )}
       />
       <Controller
         name="numero"
         control={control}
         render={({ field }) => (
-          <TextField {...field} label="Número" variant="outlined" fullWidth />
+          <TextField
+            {...field}
+            label="Número"
+            variant="outlined"
+            fullWidth
+          />
         )}
       />
       <Controller
@@ -102,9 +129,15 @@ const FormEdit = ({ data, close }) => {
         control={control}
         rules={{ required: 'La Agencia es obligatoria' }}
         render={({ field }) => (
-          <Select {...field} classNamePrefix="react-select" variant="outlined" fullWidth error={!!errors.agencia} helperText={errors.agencia?.message}>
+          <Select
+            {...field}
+            variant="outlined"
+            fullWidth
+            error={!!errors.agencia}
+            displayEmpty
+          >
             <MenuItem value="" disabled>Seleccione Agencia</MenuItem>
-            {MapOptions(datoAgencia, 'Id_Agencia', 'Agencia').map(option => (
+            {mapOptions(datoAgencia, 'Id_Agencia', 'Agencia').map(option => (
               <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
             ))}
           </Select>
@@ -115,9 +148,15 @@ const FormEdit = ({ data, close }) => {
         control={control}
         rules={{ required: 'El Jefe Zonal es obligatorio' }}
         render={({ field }) => (
-          <Select {...field} variant="outlined" fullWidth error={!!errors.jefeZonal} helperText={errors.jefeZonal?.message}>
+          <Select
+            {...field}
+            variant="outlined"
+            fullWidth
+            error={!!errors.jefeZonal}
+            displayEmpty
+          >
             <MenuItem value="" disabled>Seleccione Jefe Zonal</MenuItem>
-            {MapOptions(datoJZ, 'id_JZ', 'Nombre_JZ').map(option => (
+            {mapOptions(datoJZ, 'id_JZ', 'Nombre_JZ').map(option => (
               <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
             ))}
           </Select>
@@ -128,9 +167,15 @@ const FormEdit = ({ data, close }) => {
         control={control}
         rules={{ required: 'El Supervisor es obligatorio' }}
         render={({ field }) => (
-          <Select {...field} variant="outlined" fullWidth error={!!errors.supervisor} helperText={errors.supervisor?.message}>
+          <Select
+            {...field}
+            variant="outlined"
+            fullWidth
+            error={!!errors.supervisor}
+            displayEmpty
+          >
             <MenuItem value="" disabled>Seleccione Supervisor</MenuItem>
-            {MapOptions(datoSuper, 'id_Super', 'Nombre_Super').map(option => (
+            {mapOptions(datoSuper, 'id_Super', 'Nombre_Super').map(option => (
               <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
             ))}
           </Select>
@@ -139,9 +184,22 @@ const FormEdit = ({ data, close }) => {
       <Controller
         name="DniAsesor"
         control={control}
-        rules={{ required: 'El DNI del Asesor es obligatorio', maxLength: 8, minLength: 8 }}
+        rules={{
+          required: 'El DNI del Asesor es obligatorio',
+          pattern: {
+            value: /^\d{8}$/,
+            message: 'El DNI debe tener 8 dígitos'
+          }
+        }}
         render={({ field }) => (
-          <TextField {...field} label="DNI Asesor" variant="outlined" fullWidth error={!!errors.DniAsesor} helperText={errors.DniAsesor?.message} />
+          <TextField
+            {...field}
+            label="DNI Asesor"
+            variant="outlined"
+            fullWidth
+            error={!!errors.DniAsesor}
+            helperText={errors.DniAsesor?.message}
+          />
         )}
       />
       <Controller
@@ -151,7 +209,7 @@ const FormEdit = ({ data, close }) => {
           const formatDateTime = (dateTime) => {
             if (!dateTime) return "";
             const date = new Date(dateTime);
-            date.setHours(date.getHours() + 5);
+            date.setHours(date.getHours());
             const year = date.getFullYear();
             const month = String(date.getMonth() + 1).padStart(2, '0');
             const day = String(date.getDate()).padStart(2, '0');

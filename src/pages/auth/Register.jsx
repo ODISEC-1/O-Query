@@ -253,7 +253,6 @@ function Register() {
           </div>
         </form>
         {EstadoRegistro()}
-        {/* {dniData.datoDni.verificado  ? : } */}
       </div>
       <div className="flex justify-center">
         <TablaRegistro updateTable={UpadateTable} />
