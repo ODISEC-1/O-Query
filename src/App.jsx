@@ -3,6 +3,7 @@ import AuthLayout from "./Layout/Auth/AuthLayout"
 import Login  from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import { Toaster } from 'react-hot-toast';
+import PrivateRoute from "./services/PrivateRoute";
 
 function App() {
   return (
@@ -11,7 +12,11 @@ function App() {
     <Routes>
       <Route path="/" element={<AuthLayout/>}>
       <Route index element ={<Login/>}/>
-      <Route path="/DerivacionesRegistro" element ={<Register/>}/>
+      <Route path="/DerivacionesRegistro" element ={
+           <PrivateRoute>
+             <Register/>
+           </PrivateRoute>
+        }/>
       </Route>
     </Routes>
     </BrowserRouter>

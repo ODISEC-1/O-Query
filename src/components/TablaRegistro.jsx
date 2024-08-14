@@ -24,6 +24,11 @@ const TablaRegistro = ({ updateTable }) => {
     dispatch(DataRegistro());
   }, [updateTable, dispatch,triggerUpdate]);
 
+  const formatFechaCorreo = (fechaCorreo) => {
+    const separar = fechaCorreo.split('T');
+    return separar.join(' ');
+  };
+
   const handleButtonClick = async (row) => {
     const { id } = row;
     const { data } = await axios.get(`https://apirena-production.up.railway.app/api/Derivation/${id}`);
@@ -61,7 +66,7 @@ const TablaRegistro = ({ updateTable }) => {
   };
 
   const columns = [
-    { field: 'FechaCorreo', headerName: 'Fecha Correo' },
+    { field: 'FechaCorreo', headerName: 'Fecha Correo',renderCell: (params) => formatFechaCorreo(params.value)},
     { field: 'DNI', headerName: 'DNI' },
     { field: 'NombreCompleto', headerName: 'Nombre Completo', width: 130 },
     { field: 'Numero', headerName: 'Numero' },
@@ -108,7 +113,6 @@ const TablaRegistro = ({ updateTable }) => {
     <div style={{ height: 400, width: '100%' }}>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
       <h1 className="text-2xl font-bold text-center p-4">TABLA DERIVACIONES</h1>
-
       </div>
       <Button
         variant="contained"

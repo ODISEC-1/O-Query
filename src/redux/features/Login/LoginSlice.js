@@ -28,6 +28,8 @@ const LoginSlice =createSlice({
         state.response ={};
        })
     }
-})
+});
+
+export const ResponseLogin = (state)=>state.LoginSlice.response
 
 export default LoginSlice.reducer;

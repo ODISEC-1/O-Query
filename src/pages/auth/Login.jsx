@@ -1,16 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { VscAccount, VscKey, VscEye, VscEyeClosed } from "react-icons/vsc";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { VerifyLogin } from "../../redux/features/Login/Thunk/Auth";
+
 
 export const Login = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
+  const loginState = useSelector((state) => state.AuthLogin);
+
+  useEffect(() => {
+    if (loginState.status === 'succeeded') {
+     
+      const token = localStorage.getItem('token');
+      console.log(token)
+      navigate('/DerivacionesRegistro');
+    }
+  }, [loginState.status, navigate]);
 
   const onSubmit = (data) => {
-    console.log(data);
-    navigate('/DerivacionesRegistro');
+    const estructura = {
+      Name_usuario: data.Usuario,
+      Password_usuario: data.Contraseña
+    };
+    dispatch(VerifyLogin(estructura));
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
   };
 
   return (
@@ -49,7 +70,7 @@ export const Login = () => {
           <button
             type="button"
             className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500"
-            onClick={() => setShowPassword(!showPassword)}
+            onClick={togglePasswordVisibility}
           >
             {showPassword ? <VscEyeClosed /> : <VscEye />}
           </button>

@@ -1,14 +1,27 @@
+import { Token } from "@mui/icons-material";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const VerifyLogin =createAsyncThunk('Auth/Login',async(data)=>{
-   try {
-     const {data} = await axios.post('http://localhost:3001/api/Login',data);
-    return data
-   } catch (error) {
-            console.error('Error usuario:', error);
-        throw error;
+export const VerifyLogin = createAsyncThunk(
+   'auth/login',
+   async (credentials, { rejectWithValue }) => {
+     try {
+       const response = await axios.post('http://localhost:3001/api/Login', credentials);
+       const { token, datos } = response.data;
+       const DT = {
+         token,
+         ...datos
+       }
+       localStorage.setItem('token', JSON.stringify(DT));
+        console.log(response)
+       return { datos, token };
+     } catch (error) {
+       if (!error.response) {
+         throw error;
+       }
+       return rejectWithValue(error.response.data);
+     }
    }
-})
+ )
  
 
