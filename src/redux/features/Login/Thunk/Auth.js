@@ -6,7 +6,7 @@ export const VerifyLogin = createAsyncThunk(
    'auth/login',
    async (credentials, { rejectWithValue }) => {
      try {
-       const response = await axios.post('http://localhost:3001/api/Login', credentials);
+       const response = await axios.post('https://apirena-production.up.railway.app/api/Login', credentials);
        const { token, datos } = response.data;
        const DT = {
          token,
