@@ -1,4 +1,3 @@
-import { Token } from "@mui/icons-material";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -12,7 +11,7 @@ export const VerifyLogin = createAsyncThunk(
          token,
          ...datos
        }
-       localStorage.setItem('token', JSON.stringify(DT));
+       localStorage.setItem('token', token);
         console.log(response)
        return { datos, token };
      } catch (error) {
