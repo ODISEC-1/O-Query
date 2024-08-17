@@ -187,7 +187,7 @@ function Register() {
                 <FaUserTie className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
                 <input
                   type="text"
-                  disabled={dniData?.datoDni?.busqueda?.nombre ? true : false}
+                  disabled={true}
                   className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg"
                   placeholder="nombre"
                   {...register('nombre', { required: 'nombre es requerida' })}

@@ -32,36 +32,7 @@ function Navbar() {
           <img src="https://odisec.com/assets/images/logo/logo.png" className="h-14" alt="ODISEC Logo" />
         </a>
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-          <button 
-            type="button" 
-            className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" 
-            id="user-menu-button" 
-            aria-expanded={isUserOpen ? "true" : "false"} 
-            onClick={toggleUser}
-          >
-            <AccountCircleIcon sx={style} />
-          </button>
-          
-          {isUserOpen && (
-            <div
-              className="absolute right-0 mt-[40%] w-48 z-50 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 dark:divide-gray-600 md:right-[10%] md:mt-[08%] md:w-48 sm:right-[5%] sm:mt-[20%] sm:w-40"
-              id="user-dropdown"
-            >
-              <div className="px-4 py-3">
-                <span className="block text-sm text-gray-900 dark:text-white">{response?.Nombre_Real}</span>
-                <span className="block text-sm text-gray-500 truncate dark:text-gray-400">{response?.Name_usuario}</span>
-                <span className="block text-sm text-gray-500 dark:text-gray-400">{response?.DNI_Usuario}</span>
-                <span className="block text-sm text-gray-500 dark:text-gray-400">{response?.puesto.puesto}</span>
-              </div>
-              <div>
-                <button className="text-white p-2" onClick={ClearLocalStorage}>
-                  Sign out
-                </button>
-              </div>
-            </div>
-          )}
-    
-          <button 
+        <button 
             data-collapse-toggle="navbar-user" 
             type="button" 
             className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" 
@@ -74,6 +45,36 @@ function Navbar() {
               <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
             </svg>
           </button>
+          
+          {isUserOpen && (
+            <div
+              className="absolute right-0 mt-[40%] w-48 z-50 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 dark:divide-gray-600 md:right-[10%] md:mt-[08%] md:w-48 sm:right-[5%] sm:mt-[20%] sm:w-40"
+              id="user-dropdown"
+            >
+              <div className="px-4 py-3">
+                <span className="block text-sm text-gray-900 dark:text-white">{response?.Nombre_Real}</span>
+                <span className="block text-sm text-gray-500 truncate dark:text-gray-400">{response?.Name_usuario}</span>
+                <span className="block text-sm text-gray-500 dark:text-gray-400">{response?.DNI_Usuario}</span>
+                <span className="block text-sm text-gray-500 dark:text-gray-400">{response?.puesto?.puesto}</span>
+              </div>
+              <div>
+                <button className="text-white p-2" onClick={ClearLocalStorage}>
+                  Sign out
+                </button>
+              </div>
+            </div>
+          )}
+     <button 
+            type="button" 
+            className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" 
+            id="user-menu-button" 
+            aria-expanded={isUserOpen ? "true" : "false"} 
+            onClick={toggleUser}
+          >
+            <AccountCircleIcon sx={style} />
+          </button>
+
+       
         </div>
         <div className={`items-center justify-between ${isMenuOpen ? "block" : "hidden"} w-full md:flex md:w-auto md:order-1`} id="navbar-user">
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-sky-700 dark:border-gray-700">
