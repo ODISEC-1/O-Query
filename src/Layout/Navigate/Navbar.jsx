@@ -10,7 +10,7 @@ const style = {
 
 function Navbar() {
   const [isUserOpen, setIsUserOpen] = useState(false);
-  const { datos } = useSelector((state) => state.AuthLogin.response);
+  const {response } = useSelector((state) => state.AuthLogin);
   const toggleUser = () => {
     setIsUserOpen(!isUserOpen);
   };
@@ -48,10 +48,10 @@ function Navbar() {
               id="user-dropdown"
             >
               <div className="px-4 py-3">
-                <span className="block text-sm text-gray-900 dark:text-white">{datos.Nombre_Real}</span>
-                <span className="block text-sm text-gray-500 truncate dark:text-gray-400">{datos.Name_usuario}</span>
-                <span className="block text-sm text-gray-500 dark:text-gray-400">{datos.DNI_Usuario}</span>
-                <span className="block text-sm text-gray-500 dark:text-gray-400">{datos.puesto}</span>
+                <span className="block text-sm text-gray-900 dark:text-white">{response?.Nombre_Real}</span>
+                <span className="block text-sm text-gray-500 truncate dark:text-gray-400">{response?.Name_usuario}</span>
+                <span className="block text-sm text-gray-500 dark:text-gray-400">{response?.DNI_Usuario}</span>
+                <span className="block text-sm text-gray-500 dark:text-gray-400">{response?.puesto.puesto}</span>
               </div>
               <div>
                 <button className="text-white p-2" onClick={ClearLocalStorage}>

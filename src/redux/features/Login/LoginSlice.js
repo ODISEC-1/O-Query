@@ -24,8 +24,8 @@ const LoginSlice =createSlice({
        })
        .addCase(VerifyLogin.rejected,(state,action)=>{
         state.status = 'failed';
-        state.error = action.error.message;
-        state.response ={};
+        state.error = action.payload;
+        state.response =action.payload;
        })
     }
 });

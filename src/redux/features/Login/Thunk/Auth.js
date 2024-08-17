@@ -7,13 +7,8 @@ export const VerifyLogin = createAsyncThunk(
      try {
        const response = await axios.post('https://apirena-production.up.railway.app/api/Login', credentials);
        const { token, datos } = response.data;
-       const DT = {
-         token,
-         ...datos
-       }
        localStorage.setItem('token', token);
-        console.log(response)
-       return { datos, token };
+       return datos ;
      } catch (error) {
        if (!error.response) {
          throw error;

@@ -16,8 +16,7 @@ export const Login = () => {
   useEffect(() => {
     if (loginState.status === 'succeeded') {
      
-      const token = localStorage.getItem('token');
-      console.log(token)
+   localStorage.getItem('token');
       navigate('/DerivacionesRegistro');
     }
   }, [loginState.status, navigate]);
