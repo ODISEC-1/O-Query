@@ -13,7 +13,6 @@ export const VerifyLogin = createAsyncThunk(
         ...datos,
         access
        }
-       console.log(access)
        if (response) {
         if (response.data.access) {
           localStorage.setItem('token', JSON.stringify(DT));
