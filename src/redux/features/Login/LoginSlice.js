@@ -3,7 +3,7 @@ import { VerifyLogin } from "./Thunk/Auth";
 
 
 export const initialState={
-    response: {},
+    response: '',
     status: 'idle',
     error: null
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import '../../style/components/MenuUser.css'
 
 const style = {
   width: '1.5em',
@@ -10,14 +10,16 @@ const style = {
 
 function Navbar() {
   const [isUserOpen, setIsUserOpen] = useState(false);
-  const {response } = useSelector((state) => state.AuthLogin);
-  const toggleUser = () => {
+ const d = JSON.parse(localStorage.getItem('token'))
+
+ const toggleUser = () => {
     setIsUserOpen(!isUserOpen);
   };
   const toggleMenu=()=>{
     setIsMenuOpen(!isMenuOpen)
   }
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const ClearLocalStorage = () => {
     localStorage.clear();
     location.reload();
@@ -32,6 +34,7 @@ function Navbar() {
           <img src="https://odisec.com/assets/images/logo/logo.png" className="h-14" alt="ODISEC Logo" />
         </a>
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+          
         <button 
             data-collapse-toggle="navbar-user" 
             type="button" 
@@ -44,18 +47,19 @@ function Navbar() {
             <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
               <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
             </svg>
-          </button>
+          </button> 
+          
           
           {isUserOpen && (
             <div
-              className="absolute right-0 mt-[40%] w-48 z-50 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 dark:divide-gray-600 md:right-[10%] md:mt-[08%] md:w-48 sm:right-[5%] sm:mt-[20%] sm:w-40"
+               className='contenedorUser'
               id="user-dropdown"
             >
               <div className="px-4 py-3">
-                <span className="block text-sm text-gray-900 dark:text-white">{response?.Nombre_Real}</span>
-                <span className="block text-sm text-gray-500 truncate dark:text-gray-400">{response?.Name_usuario}</span>
-                <span className="block text-sm text-gray-500 dark:text-gray-400">{response?.DNI_Usuario}</span>
-                <span className="block text-sm text-gray-500 dark:text-gray-400">{response?.puesto?.puesto}</span>
+                <span className="block text-sm text-gray-900 dark:text-white">{d?.Nombre_Real || null}</span>
+                <span className="block text-sm text-gray-500 truncate dark:text-gray-400">{d?.Name_usuario || null}</span>
+                <span className="block text-sm text-gray-500 dark:text-gray-400">{d?.DNI_Usuario || null}</span>
+                <span className="block text-sm text-gray-500 dark:text-gray-400">{d?.puesto?.puesto || null}</span>
               </div>
               <div>
                 <button className="text-white p-2" onClick={ClearLocalStorage}>
@@ -76,26 +80,11 @@ function Navbar() {
 
        
         </div>
-        <div className={`items-center justify-between ${isMenuOpen ? "block" : "hidden"} w-full md:flex md:w-auto md:order-1`} id="navbar-user">
+        <div className={`items-center justify-between ${isMenuOpen ? " animate-slide-down block" : "hidden"} w-full md:flex md:w-auto md:order-1`} id="navbar-user">
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-sky-700 dark:border-gray-700">
             <li>
               <a href="/DerivacionesRegistro" className={`block py-2 px-3 rounded md:p-0 ${Location.pathname === '/DerivacionesRegistro' ? 'text-blue-700 dark:text-yellow-500' : 'text-gray-900 dark:text-white'}`}>
                 Registro Derivacion
-              </a>
-            </li>
-            <li>
-              <a href="#" className={`block py-2 px-3 rounded md:p-0 ${Location.pathname === '/' ? 'text-blue-700 dark:text-yellow-500' : 'text-gray-900 dark:text-white'}`}>
-                #
-              </a>
-            </li>
-            <li>
-              <a href="#" className={`block py-2 px-3 rounded md:p-0 ${Location.pathname === '/' ? 'text-blue-700 dark:text-yellow-500' : 'text-gray-900 dark:text-white'}`}>
-                #
-              </a>
-            </li>
-            <li>
-              <a href="#" className={`block py-2 px-3 rounded md:p-0 ${Location.pathname === '/' ? 'text-blue-700 dark:text-yellow-500' : 'text-gray-900 dark:text-white'}`}>
-                #
               </a>
             </li>
           </ul>

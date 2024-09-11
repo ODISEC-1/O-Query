@@ -1,10 +1,11 @@
-import { BrowserRouter , Routes , Route,useLocation} from "react-router-dom"
+import { BrowserRouter , Routes , Route,useLocation, useNavigate} from "react-router-dom"
 import AuthLayout from "./Layout/Auth/AuthLayout"
 import Login  from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import { Toaster } from 'react-hot-toast';
 import PrivateRoute from "./services/PrivateRoute";
 import Navbar from "./Layout/Navigate/Navbar";
+
 
 function App() {
 

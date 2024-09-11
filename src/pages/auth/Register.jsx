@@ -80,7 +80,7 @@ function Register() {
   const EstadoRegistro = ()=>{
     if (dni && dni.length === 8) {
        if (dniData.datoDni.verificado === true) {
-           return( <span >Ya registrado ✅<br /><span style={{color:'red'}}><sub>si desea editarlo busque en la tabla 👇</sub></span></span>)
+           return( <span >Ya registrado ✅<br /><sub style={{color:'red'}}>si desea editarlo busque en la tabla 👇</sub></span>)
        }else{
          return(<span>No registrado Antes</span>)
        }

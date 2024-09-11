@@ -4,6 +4,8 @@ import { VscAccount, VscKey, VscEye, VscEyeClosed } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { VerifyLogin } from "../../redux/features/Login/Thunk/Auth";
+import toast from "react-hot-toast";
+
 
 
 export const Login = () => {
@@ -11,22 +13,26 @@ export const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
-  const loginState = useSelector((state) => state.AuthLogin);
+  const {response,status,error} = useSelector((state)=>state.AuthLogin)
+  console.log(response)
 
-  useEffect(() => {
-    if (loginState.status === 'succeeded') {
-     
-   localStorage.getItem('token');
-      navigate('/DerivacionesRegistro');
+   useEffect(()=>{
+    if (response === true) {
+      navigate('/DerivacionesRegistro')
+    }else if('Cuenta bloqueada por demasiados intentos fallidos' || 'Contraseña incorrecta'||'Cuenta bloqueada'||'Usuario no Encontrado'){
+      toast.error(response)
+    }else if (Object.keys(response).length===0) {
+       return '' 
     }
-  }, [loginState.status, navigate]);
+   },[response])
 
   const onSubmit = (data) => {
     const estructura = {
       Name_usuario: data.Usuario,
       Password_usuario: data.Contraseña
     };
-    dispatch(VerifyLogin(estructura));
+    dispatch(VerifyLogin(estructura))
+
   };
 
   const togglePasswordVisibility = () => {
@@ -39,6 +45,7 @@ export const Login = () => {
         <h1 className="text-3xl uppercase font-bold text-center">Iniciar Sesión</h1>
       </div>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+       
         <div className="relative">
           <VscAccount className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
           <input
@@ -49,6 +56,7 @@ export const Login = () => {
             {...register('Usuario', { required: 'Usuario es requerido' })}
           />
         </div>
+
         {errors.Usuario && <span className="text-red-500">{errors.Usuario.message}</span>}
         
         <div className="relative">
@@ -66,6 +74,7 @@ export const Login = () => {
               }
             })}
           />
+
           <button
             type="button"
             className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500"
