@@ -23,7 +23,7 @@ function Register() {
   const DataJZ = useSelector((stateJZ) => stateJZ.JefeZonal);
   const { status } = dniData;
 
-  const [UpadateTable, SetUpadateTable] = useState(false);
+  const [UpadateTable, SetUpadateTable] = useState(true);
 
   useEffect(() => {
     dispatch(FetchAllJZ());
@@ -76,16 +76,19 @@ function Register() {
       SetUpadateTable(prev => !prev);
     });
   };
-
-  const EstadoRegistro = ()=>{
+  const EstadoRegistro = () => {
     if (dni && dni.length === 8) {
-       if (dniData.datoDni.verificado === true) {
-           return( <span >Ya registrado ✅<br /><sub style={{color:'red'}}>si desea editarlo busque en la tabla 👇</sub></span>)
-       }else{
-         return(<span>No registrado Antes</span>)
-       }
+      if (dniData.datoDni?.verificado) {
+        return (
+          <span>Ya registrado ✅<br /><sub style={{color:'red'}}>Si desea editarlo busque en la tabla 👇</sub></span>
+        );
+      } else {
+        return <span>No registrado Antes</span>;
+      }
     }
-  } 
+    return null; 
+  };
+  
 
   const mapOptions = (data, valueKey, labelKey) => data.map((item) => ({ value: item[valueKey], label: item[labelKey] }));
 
@@ -106,7 +109,13 @@ function Register() {
                   className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg"
                   placeholder="DNI Consulta"
                   name="dni"
-                  {...register('dni', { required: 'DNI es requerido', maxLength: 8, minLength: 8 })}
+                  {...register('dni', { 
+                    required: 'DNI es requerido', 
+                    minLength: { value: 8, message: 'DNI debe tener 8 dígitos' }, 
+                    maxLength: { value: 8, message: 'DNI debe tener 8 dígitos' }, 
+                    pattern: { value: /^\d+$/, message: 'Solo se permiten números en el DNI' }
+                 })}
+                 
                 />
                 {errors.dni && <span className="text-red-500">{errors.dni.message}</span>}
               </div>
@@ -119,7 +128,7 @@ function Register() {
                   render={({ field }) => (
                     <Select
                       {...field}
-                      options={mapOptions(DataJZ.datoAgencia, 'Id_Agencia', 'Agencia')}
+                      options={DataJZ?.datoAgencia ? mapOptions(DataJZ.datoAgencia, 'Id_Agencia', 'Agencia') : []}
                       placeholder="Selecione Agencia"
                       classNamePrefix="react-select"
                     />

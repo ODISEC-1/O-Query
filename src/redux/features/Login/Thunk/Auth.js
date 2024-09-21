@@ -12,6 +12,7 @@ export const VerifyLogin = createAsyncThunk(
        const DT={
         ...datos,
        }
+
        if (response) {
         if (response.data.access) {
           const encryp = encryptData(DT)
@@ -22,7 +23,6 @@ export const VerifyLogin = createAsyncThunk(
         }
        }
        
-
        return access ;
      } catch (error) {
        if (!error.response) {
@@ -33,7 +33,9 @@ export const VerifyLogin = createAsyncThunk(
    }
  )
  
-
+ 
  /*{
-    data: { access: false, message: 'Contraseña incorrecta' }*/
+ data: { access:
+false, message: 'Contraseña incorrecta' 
+}*/
 
