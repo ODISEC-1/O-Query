@@ -12,8 +12,8 @@ export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const { response, status, error } = useSelector((state) => state.AuthLogin);
-
-
+  console.log(status)
+  console.log(response)
   useEffect(() => {
     if (status === 'succeeded') { 
       toast.success('BIENVENIDO');

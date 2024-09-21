@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useLocation } from 'react-router-dom';
 import '../../style/components/MenuUser.css'
+import { decryptData } from '../../utils/Encriptar';
 
 const style = {
   width: '1.5em',
@@ -10,7 +11,8 @@ const style = {
 
 function Navbar() {
   const [isUserOpen, setIsUserOpen] = useState(false);
- const d = JSON.parse(localStorage.getItem('token'))
+ const descryp = decryptData(JSON.parse(localStorage.getItem('token')))
+ const d = descryp
 
  const toggleUser = () => {
     setIsUserOpen(!isUserOpen);

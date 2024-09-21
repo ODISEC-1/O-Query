@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { encryptData } from "../../../../utils/Encriptar";
 
 export const VerifyLogin = createAsyncThunk(
    'auth/login',
@@ -9,13 +10,12 @@ export const VerifyLogin = createAsyncThunk(
        const { token, datos,access } = response.data;
 
        const DT={
-        token,
         ...datos,
-        access
        }
        if (response) {
         if (response.data.access) {
-          localStorage.setItem('token', JSON.stringify(DT));
+          const encryp = encryptData(DT)
+          localStorage.setItem('token', JSON.stringify(encryp,access));
         }else{
           console.log(response.data.message)
           return response.data.message;
