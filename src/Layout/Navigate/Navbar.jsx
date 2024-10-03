@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import '../../style/components/MenuUser.css'
 import { decryptData } from '../../utils/Encriptar';
 
@@ -85,9 +85,14 @@ function Navbar() {
         <div className={`items-center justify-between ${isMenuOpen ? " animate-slide-down block" : "hidden"} w-full md:flex md:w-auto md:order-1`} id="navbar-user">
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-sky-700 dark:border-gray-700">
             <li>
-              <a href="/DerivacionesRegistro" className={`block py-2 px-3 rounded md:p-0 ${Location.pathname === '/DerivacionesRegistro' ? 'text-blue-700 dark:text-yellow-500' : 'text-gray-900 dark:text-white'}`}>
+              <Link to={'/DerivacionesRegistro'}  className={`block py-2 px-3 rounded md:p-0 ${Location.pathname === '/DerivacionesRegistro' ? 'text-blue-700 dark:text-yellow-500' : 'text-gray-900 dark:text-white'}`}>
                 Registro Derivacion
-              </a>
+              </Link>
+            </li>
+            <li>
+              <Link to={'/EstadoCliente'} className={`block py-2 px-3 rounded md:p-0 ${Location.pathname === '/EstadoCliente' ? 'text-blue-700 dark:text-yellow-500' : 'text-gray-900 dark:text-white'}`}>
+              Estado Cliente
+              </Link>
             </li>
           </ul>
         </div>

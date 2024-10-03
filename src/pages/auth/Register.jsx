@@ -15,6 +15,7 @@ import Select from 'react-select';
 import { DataRegistro } from '../../redux/features/TablaRegistro/Thunk/DataRegistro';
 import LoadingHandler from '../../components/LoadingHandler';
 
+
 function Register() {
   const dispatch = useDispatch();
   const { register, handleSubmit, watch, setValue, control, reset, formState: { errors } } = useForm();
@@ -34,7 +35,7 @@ function Register() {
   useEffect(() => {
     if (dni && dni.length === 8) {
       dispatch(FetchDataByDNI(dni));
-    } else {
+    }else {
       reset({ nombre: '', oferta: '', numero: '' });
     }
   }, [dni, dispatch, reset]);
@@ -45,8 +46,6 @@ function Register() {
       setValue('oferta', dniData.datoDni.busqueda.oferta);
       setValue('numero', dniData.datoDni.busqueda.numero);
       setValue('verificacion',dniData.datoDni.verificado)
-    } else {
-      reset({ nombre: '', oferta: '', numero: '' });
     }
   }, [dniData, setValue, reset]);
 
@@ -76,13 +75,16 @@ function Register() {
       SetUpadateTable(prev => !prev);
     });
   };
+
   const EstadoRegistro = () => {
     if (dni && dni.length === 8) {
       if (dniData.datoDni?.verificado) {
-        return (
+        return 
+        (
           <span>Ya registrado ✅<br /><sub style={{color:'red'}}>Si desea editarlo busque en la tabla 👇</sub></span>
         );
       } else {
+        return 
         return <span>No registrado Antes</span>;
       }
     }
@@ -97,7 +99,7 @@ function Register() {
       <div className="bg-white p-8 rounded-lg w-full md:w-5/5 lg:w-3/3 mx-auto">
         <div className="mb-10 flex-column items-center justify-center">
           <h1 className="text-3xl uppercase font-bold text-center">Registrar</h1>
-          <LoadingHandler status={status} succeeded={null} rejected="No se encontro cliente"/>
+          <LoadingHandler status={status} succeeded={null} rejected={'Cliente no encontrado'} value={dni}/>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div className="flex flex-wrap -mx-2">
@@ -196,7 +198,6 @@ function Register() {
                 <FaUserTie className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
                 <input
                   type="text"
-                  disabled={true}
                   className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg"
                   placeholder="nombre"
                   {...register('nombre', { required: 'nombre es requerida' })}
@@ -207,7 +208,7 @@ function Register() {
                 <FaMoneyBillTrendUp className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500" />
                 <input
                   type="number"
-                  disabled={dniData?.datoDni?.busqueda?.oferta ? true : false}
+
                   className="w-full border border-gray-200 outline-none py-2 px-8 rounded-lg"
                   placeholder="Oferta"
                   {...register('oferta', { required: 'oferta es requerido' })}
@@ -257,6 +258,7 @@ function Register() {
             >
               Enviar
             </button>
+
           </div>
             </div>
           </div>

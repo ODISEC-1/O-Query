@@ -33,9 +33,3 @@ export const VerifyLogin = createAsyncThunk(
    }
  )
  
- 
- /*{
- data: { access:
-false, message: 'Contraseña incorrecta' 
-}*/
-
