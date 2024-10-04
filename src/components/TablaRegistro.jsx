@@ -9,6 +9,8 @@ import axios from 'axios';
 import EditModal from './EditModal';
 import { DeleteDerivacion } from '../redux/features/Datos/Thunk/Data';
 import DeleteModal from './DeleteModal';
+// import { exportToCSV } from '../services/ExportCSV';
+// import { exportToCSV } from '../services/ExportCSV';
 
 const TablaRegistro = ({ updateTable }) => {
   const dispatch = useDispatch();
@@ -64,6 +66,10 @@ const TablaRegistro = ({ updateTable }) => {
   const handleExport = () => {
     exportToExcel(rows, 'Derivaciones.xlsx');
   };
+
+  // const handleExportCSV =()=>{
+  //   console.log(rows)
+  //  }
 
   const columns = [
     { field: 'FechaCorreo', headerName: 'Fecha Correo',renderCell: (params) => formatFechaCorreo(params.value)},
@@ -126,7 +132,20 @@ const TablaRegistro = ({ updateTable }) => {
         }}
       >
         Descargar en Excel
-      </Button>
+      </Button>   
+       {/* <Button
+        variant="contained"
+        onClick={handleExportCSV}
+        sx={{
+          marginBottom: '10px',
+          bgcolor: '#0284c7',
+          '&:hover': {
+            bgcolor: '#0078c1',
+          },
+        }}
+      >
+        Descargar en CSV
+      </Button> */}
       <DataGrid
         rows={rows}
         columns={columns}
