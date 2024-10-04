@@ -30,7 +30,7 @@ export const exportToExcel = (data, fileName = 'derivaciones.xlsx') => {
         
      }
 
-     const ejecutorTipo =ColumnaTipo()
+     const ejecutorTipos = ColumnaTipo()
 
     return {
       JefeZonal: String(ejecutor), 
@@ -46,7 +46,7 @@ export const exportToExcel = (data, fileName = 'derivaciones.xlsx') => {
       Blanco_2: String(''),
       Numero: Number(item.Numero),
       POR_CONFIRMAR:String('POR CONFIRMAR'),
-      TIPO:String(ejecutorTipo)
+      TIPO:String(ejecutorTipos)
 
     };
   });
