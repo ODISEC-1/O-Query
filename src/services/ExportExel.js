@@ -19,6 +19,19 @@ export const exportToExcel = (data, fileName = 'derivaciones.xlsx') => {
 
     const ejecutor = NombreJefeZonal(); 
 
+     const ColumnaTipo=()=>{
+      
+      const e = ejecutor;
+      if (e ==='ODISEC CALL CENTER' || e === 'TERESA VILLEGAS') {
+        return 'CALL CENTER'
+      }else{
+        return 'CAMPO'
+      }
+        
+     }
+
+     const ejecutorTipo =ColumnaTipo()
+
     return {
       JefeZonal: String(ejecutor), 
       FechaCorreo: moment(item.FechaCorreo).format('DD/MM/YY HH:mm'), 
@@ -32,13 +45,16 @@ export const exportToExcel = (data, fileName = 'derivaciones.xlsx') => {
       Blanco_1: String(''),
       Blanco_2: String(''),
       Numero: Number(item.Numero),
+      POR_CONFIRMAR:String('POR CONFIRMAR'),
+      TIPO:String(ejecutorTipo)
+
     };
   });
 
   const worksheet = XLSX.utils.json_to_sheet(structuredData);
   const range = XLSX.utils.decode_range(worksheet['!ref']);
 
-  // Consolidar la lógica de formato de columnas
+
   const formatColumns = ['DNI', 'FechaCorreo', 'FechaDesembolso'];
   const formats = {
     'DNI': '@',

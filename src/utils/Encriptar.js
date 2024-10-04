@@ -29,7 +29,6 @@ export const decryptData = (encryptedData) => {
 
     const bytes = CryptoJS.AES.decrypt(encryptedData, Secret_Key);
     const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-    console.log("Datos Descifrados:", decrypted);
     return JSON.parse(decrypted);
   } catch (error) {
     console.error("Error de decodificación:", error.message);

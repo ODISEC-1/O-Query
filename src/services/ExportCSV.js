@@ -1,33 +1,19 @@
-import pkg from 'file-saver';
-import { stringify } from 'csv';
+import { saveAs } from 'file-saver';
 
+export const exportToCSV = (data, filename = 'Derivaciones.csv') => {
 
-const { saveAs } = pkg;
-
-export const exportToCSV = (data, fileName='DDER.csv') => {
-  console.log(data);
-  
-  // Solo extraemos el campo 'DNI' de cada registro en la tabla
-  const estructura = data.map(item => ({
-    DNI: String(item?.DNI)
+  const dataDNI = data.map(item => ({
+    DNI: item.DNI
   }));
 
-  const csvOptions = {
-    header: true,
-    columns: {
-      DNI: 'DNI'  // Nombre de la cabecera de la columna en el CSV
-    }
-  };
+ 
+  let csvContent = '';  
 
-  // Convertimos los datos a CSV y los descargamos
-  stringify(estructura, csvOptions, (err, csvString) => {
-    if (err) {
-      console.error(`Error: ${err}`);
-      return;
-    }
-
-    // Crear el archivo CSV y descargarlo
-    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
-    saveAs(blob, fileName);
+  dataDNI.forEach(item => {
+    csvContent += `${item.DNI}\n`;
   });
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+  saveAs(blob, filename);
 };

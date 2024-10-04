@@ -9,8 +9,10 @@ import axios from 'axios';
 import EditModal from './EditModal';
 import { DeleteDerivacion } from '../redux/features/Datos/Thunk/Data';
 import DeleteModal from './DeleteModal';
-// import { exportToCSV } from '../services/ExportCSV';
-// import { exportToCSV } from '../services/ExportCSV';
+import { exportToCSV } from '../services/ExportCSV';
+import { decryptData } from '../utils/Encriptar';
+
+
 
 const TablaRegistro = ({ updateTable }) => {
   const dispatch = useDispatch();
@@ -20,6 +22,9 @@ const TablaRegistro = ({ updateTable }) => {
   const [modalOpenDelete, setModalOpenDelete] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [triggerUpdate, setTriggerUpdate] = useState(false);
+  const decrypt = decryptData(JSON.parse(localStorage.getItem('token')))
+   const datoConditional = decrypt.puesto.id_puesto
+  
 
 
   useEffect(() => {
@@ -67,10 +72,12 @@ const TablaRegistro = ({ updateTable }) => {
     exportToExcel(rows, 'Derivaciones.xlsx');
   };
 
-  // const handleExportCSV =()=>{
-  //   console.log(rows)
-  //  }
+  const handleExportCSV =()=>{
+     if (rows) {
+       exportToCSV(rows,'Derivaciones_DNI.csv')
+     }
 
+   }
   const columns = [
     { field: 'FechaCorreo', headerName: 'Fecha Correo',renderCell: (params) => formatFechaCorreo(params.value)},
     { field: 'DNI', headerName: 'DNI' },
@@ -132,11 +139,13 @@ const TablaRegistro = ({ updateTable }) => {
         }}
       >
         Descargar en Excel
-      </Button>   
-       {/* <Button
+      </Button>
+      { datoConditional === 2 ?
+       <Button
         variant="contained"
         onClick={handleExportCSV}
         sx={{
+          marginLeft: '10px',
           marginBottom: '10px',
           bgcolor: '#0284c7',
           '&:hover': {
@@ -145,7 +154,10 @@ const TablaRegistro = ({ updateTable }) => {
         }}
       >
         Descargar en CSV
-      </Button> */}
+      </Button>
+      : null
+      } 
+
       <DataGrid
         rows={rows}
         columns={columns}
