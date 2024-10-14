@@ -76,17 +76,44 @@ const TablaRegistro = ({ updateTable }) => {
     const hastael=watch('hastaEl')
 
     if (desdeel && hastael) {   
-      const filterRows = rows.filter((row)=>{
-        const fechaCorreo= new Date(row.FechaCorreo);
-        return fechaCorreo >= new Date(desdeel) && fechaCorreo <= new Date(hastael)
-      })
+      const filterRows = rows.filter((row) => {
+        const fechaCorreo = new Date(row.FechaCorreo);
+        const desdeFecha = new Date(desdeel);
+        const hastaFecha = new Date(hastael);
+        
+        // Ajustar hastaFecha para incluir todo el día
+        hastaFecha.setHours(23, 59, 59, 999);
+        
+        return fechaCorreo >= desdeFecha && fechaCorreo <= hastaFecha;
+      });
+
       exportToExcel(filterRows, 'Derivaciones.xlsx');
-      exportToCSV(filterRows,'Derivaciones_DNI.csv')
     }else{
       exportToExcel(rows,'Derivaciones.xlsx')
-      exportToCSV(rows,'Derivaciones_DNI.csv')
     }
   };
+
+  const handleExportCSV = ()=>{
+    const desdeel=watch('desdeEl')
+    const hastael=watch('hastaEl')
+
+    if (desdeel && hastael) {   
+      const filterRows = rows.filter((row) => {
+        const fechaCorreo = new Date(row.FechaCorreo);
+        const desdeFecha = new Date(desdeel);
+        const hastaFecha = new Date(hastael);
+        
+        // Ajustar hastaFecha para incluir todo el día
+        hastaFecha.setHours(23, 59, 59, 999);
+        
+        return fechaCorreo >= desdeFecha && fechaCorreo <= hastaFecha;
+      });
+
+      exportToCSV(filterRows,'Derivaciones_DNI.csv')
+    }else{
+      exportToCSV(rows,'Derivaciones_DNI.csv')
+    }
+  }
 
   const columns = [
     { field: 'FechaCorreo', headerName: 'Fecha Correo',renderCell: (params) => formatFechaCorreo(params.value)},
@@ -166,7 +193,7 @@ const TablaRegistro = ({ updateTable }) => {
       { datoConditional === 2 ?
        <Button
         variant="contained"
-        onClick={handleExport}
+        onClick={handleExportCSV}
         sx={{
           marginBottom: '10px',
           marginLeft:'10px',
