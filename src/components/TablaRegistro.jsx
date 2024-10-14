@@ -76,17 +76,16 @@ const TablaRegistro = ({ updateTable }) => {
     const hastael=watch('hastaEl')
 
     if (desdeel && hastael) {   
-      const filterRows = rows.filter((row) => {
-        const fechaCorreo = new Date(row.FechaCorreo);
-        const desdeFecha = new Date(desdeel);
-        const hastaFecha = new Date(hastael);
-        
-        // Ajustar hastaFecha para incluir todo el día
-        hastaFecha.setHours(23, 59, 59, 999);
-        
-        return fechaCorreo >= desdeFecha && fechaCorreo <= hastaFecha;
-      });
 
+      const filterRows = rows.filter((row) => {
+        const fechaCorreo = row.FechaCorreo.split('T');
+        const soloFecha = fechaCorreo[0]
+  
+        const desdeFecha = desdeel;
+        const hastaFecha = hastael;
+
+        return soloFecha >= desdeFecha && soloFecha <= hastaFecha;
+      });
       exportToExcel(filterRows, 'Derivaciones.xlsx');
     }else{
       exportToExcel(rows,'Derivaciones.xlsx')
@@ -97,19 +96,19 @@ const TablaRegistro = ({ updateTable }) => {
     const desdeel=watch('desdeEl')
     const hastael=watch('hastaEl')
 
-    if (desdeel && hastael) {   
+    if (desdeel && hastael) { 
+       
       const filterRows = rows.filter((row) => {
-        const fechaCorreo = new Date(row.FechaCorreo);
-        const desdeFecha = new Date(desdeel);
-        const hastaFecha = new Date(hastael);
-        
-        // Ajustar hastaFecha para incluir todo el día
-        hastaFecha.setHours(23, 59, 59, 999);
-        
-        return fechaCorreo >= desdeFecha && fechaCorreo <= hastaFecha;
+        const fechaCorreo = row.FechaCorreo.split('T');
+        const soloFecha = fechaCorreo[0]
+  
+        const desdeFecha = desdeel;
+        const hastaFecha = hastael;
+
+        return soloFecha >= desdeFecha && soloFecha <= hastaFecha;
       });
 
-      exportToCSV(filterRows,'Derivaciones_DNI.csv')
+      exportToExcel(filterRows, 'Derivaciones.xlsx');
     }else{
       exportToCSV(rows,'Derivaciones_DNI.csv')
     }
