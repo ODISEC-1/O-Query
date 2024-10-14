@@ -11,6 +11,7 @@ import { DeleteDerivacion } from '../redux/features/Datos/Thunk/Data';
 import DeleteModal from './DeleteModal';
 import { exportToCSV } from '../services/ExportCSV';
 import { decryptData } from '../utils/Encriptar';
+import { useForm } from 'react-hook-form';
 
 
 
@@ -24,7 +25,7 @@ const TablaRegistro = ({ updateTable }) => {
   const [triggerUpdate, setTriggerUpdate] = useState(false);
   const decrypt = decryptData(JSON.parse(localStorage.getItem('token')))
    const datoConditional = decrypt.puesto.id_puesto
-  
+  const {register,watch} = useForm()
 
 
   useEffect(() => {
@@ -68,16 +69,25 @@ const TablaRegistro = ({ updateTable }) => {
     setModalOpenDelete(false);
   };
 
+
+
   const handleExport = () => {
-    exportToExcel(rows, 'Derivaciones.xlsx');
+    const desdeel=watch('desdeEl')
+    const hastael=watch('hastaEl')
+
+    if (desdeel && hastael) {   
+      const filterRows = rows.filter((row)=>{
+        const fechaCorreo= new Date(row.FechaCorreo);
+        return fechaCorreo >= new Date(desdeel) && fechaCorreo <= new Date(hastael)
+      })
+      exportToExcel(filterRows, 'Derivaciones.xlsx');
+      exportToCSV(filterRows,'Derivaciones_DNI.csv')
+    }else{
+      exportToExcel(rows,'Derivaciones.xlsx')
+      exportToCSV(rows,'Derivaciones_DNI.csv')
+    }
   };
 
-  const handleExportCSV =()=>{
-     if (rows) {
-       exportToCSV(rows,'Derivaciones_DNI.csv')
-     }
-
-   }
   const columns = [
     { field: 'FechaCorreo', headerName: 'Fecha Correo',renderCell: (params) => formatFechaCorreo(params.value)},
     { field: 'DNI', headerName: 'DNI' },
@@ -120,18 +130,31 @@ const TablaRegistro = ({ updateTable }) => {
         </Button>
       ),
     },
-  ];
+];
 
   return (
     <div style={{ height: 400, width: '100%' }}>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
       <h1 className="text-2xl font-bold text-center p-4">TABLA DERIVACIONES</h1>
       </div>
+      <div className='flex items-center flex-wrap'>
+          <p>desde el: </p>
+          <input type="date" name="date"  className=' mb-2 ml-1 mr-1 border border-gray-200 outline-none py-2 px-8 rounded-lg'
+          {...register('desdeEl',{required:true})}
+          />
+          
+          <p>hasta el: </p>
+          <input type="date" name="date"  className=' mb-2 ml-1 mr-1 border border-gray-200 outline-none py-2 px-8 rounded-lg'
+          {...register('hastaEl',{required:true})}
+          />
+
       <Button
         variant="contained"
         onClick={handleExport}
         sx={{
           marginBottom: '10px',
+          marginLeft:'10px',
+          marginRight:'1opx',
           bgcolor: '#0284c7',
           '&:hover': {
             bgcolor: '#0078c1',
@@ -143,10 +166,11 @@ const TablaRegistro = ({ updateTable }) => {
       { datoConditional === 2 ?
        <Button
         variant="contained"
-        onClick={handleExportCSV}
+        onClick={handleExport}
         sx={{
-          marginLeft: '10px',
           marginBottom: '10px',
+          marginLeft:'10px',
+          marginRight:'1opx',
           bgcolor: '#0284c7',
           '&:hover': {
             bgcolor: '#0078c1',
@@ -157,7 +181,7 @@ const TablaRegistro = ({ updateTable }) => {
       </Button>
       : null
       } 
-
+</div>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -168,6 +192,7 @@ const TablaRegistro = ({ updateTable }) => {
         }}
         pageSizeOptions={[5, 10]}
       />
+    
       {data && (
         <EditModal
           open={modalOpen}
