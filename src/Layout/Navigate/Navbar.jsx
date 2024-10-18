@@ -90,8 +90,8 @@ function Navbar() {
               </Link>
             </li>
             <li>
-              <Link to={'/EstadoCliente'} className={`block py-2 px-3 rounded md:p-0 ${Location.pathname === '/EstadoCliente' ? 'text-blue-700 dark:text-yellow-500' : 'text-gray-900 dark:text-white'}`}>
-              Estado Cliente
+              <Link to={'/DerivacionHistorico'} className={`block py-2 px-3 rounded md:p-0 ${Location.pathname === '/DerivacionHistorico' ? 'text-blue-700 dark:text-yellow-500' : 'text-gray-900 dark:text-white'}`}>
+              Derivacion Historico
               </Link>
             </li>
           </ul>

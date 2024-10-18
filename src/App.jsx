@@ -5,7 +5,7 @@ import Register from "./pages/auth/Register";
 import { Toaster } from 'react-hot-toast';
 import PrivateRoute from "./services/PrivateRoute";
 import Navbar from "./Layout/Navigate/Navbar";
-import EstadoCliente from "./pages/EstadoCliente";
+import DerivacionHistorico from "./pages/DerivacionHistorico";
 
 
 
@@ -25,7 +25,12 @@ function App() {
            </PrivateRoute>
         }/>
       </Route>
-      <Route path="/EstadosCliente" element={<EstadoCliente/>}/>
+      <Route path="/DerivacionHistorico" element={
+          <PrivateRoute>
+            <DerivacionHistorico/>
+          </PrivateRoute>
+        
+        }/>
     </Routes>
     </>
   )

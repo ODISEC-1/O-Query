@@ -9,7 +9,7 @@ import { BsCalendar2Date } from 'react-icons/bs';
 import TablaRegistro from '../../components/TablaRegistro';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-hot-toast';
-import { CreateDerivation, FetchDataByDNI } from '../../redux/features/Datos/Thunk/Data';
+import { CreateDerivation, CreateDerivationPHP, FetchDataByDNI } from '../../redux/features/Datos/Thunk/Data';
 import { FetchAllAgencia, FetchAllJZ, FetchAllSuper } from '../../redux/features/Datos/Thunk/JefeZonal';
 import Select from 'react-select';
 import { DataRegistro } from '../../redux/features/TablaRegistro/Thunk/DataRegistro';
@@ -64,16 +64,23 @@ function Register() {
     Asesor:String(data?.DNIAsesor)
     }
   
-    const promise = dispatch(CreateDerivation(EstructuraData)).unwrap();
-    toast.promise(promise, {
+    const promise1 = dispatch(CreateDerivation(EstructuraData)).unwrap();
+    const promise2 =dispatch(CreateDerivationPHP({dni:EstructuraData.dni})).unwrap();
+
+    const allPromise = Promise.all([promise1,promise2])
+
+     toast.promise(allPromise, {
       loading: 'Enviando Datos....',
       success: 'Datos enviados con exito!',
       error: 'Error al enviar los datos'
     });
-    promise.then(() => {
+    allPromise.then(() => {
       reset();
       SetUpadateTable(prev => !prev);
+    }).catch((error) => {
+      console.error('Error al enviar las promesas:', error);
     });
+
   };
 
   const EstadoRegistro = () => {

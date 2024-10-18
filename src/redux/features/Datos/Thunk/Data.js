@@ -46,6 +46,20 @@ export const FetchDataByDNI = createAsyncThunk(
   );
 
 
+export const CreateDerivationPHP = createAsyncThunk('data/CreateDerivationPHP',
+  async (dni,thunkAPI)=>{
+    try {
+      const createDeriPHP= await axios.post('https://derivationsystem.up.railway.app/api/DerivacionPHP',dni)
+      return createDeriPHP.data;
+    } catch (error) {
+      console.error('Error post data:', error);
+      throw error;  
+    }
+  }
+
+)
+
+
   export const UpdateDerivacion = createAsyncThunk('data/UpdateDerivacion',
    async(dataUpdate,thunkAPI)=>{
     try {

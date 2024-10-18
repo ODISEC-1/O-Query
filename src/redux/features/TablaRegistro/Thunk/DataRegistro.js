@@ -8,7 +8,7 @@ export const DataRegistro = createAsyncThunk('Registro/DataRegistro', async () =
          
       
     const datos ={
-      id: item.Id_registro, 
+      id: item.Id_registro,  
       DNI: item.DNI_Cli,
       NombreCompleto: item.Nombres,
       Numero: item.numero,

@@ -108,7 +108,7 @@ const TablaRegistro = ({ updateTable }) => {
         return soloFecha >= desdeFecha && soloFecha <= hastaFecha;
       });
 
-      exportToExcel(filterRows, 'Derivaciones.xlsx');
+      exportToCSV(filterRows,'Derivaciones_DNI.csv');
     }else{
       exportToCSV(rows,'Derivaciones_DNI.csv')
     }
