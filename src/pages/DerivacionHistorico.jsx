@@ -1,21 +1,21 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
-import { SelectData } from "../redux/features/TablaRegistro/TablaRegistroSlice";
+import { SelectDataHistorico } from "../redux/features/TablaRegistro/TablaRegistroSlice";
 import { useEffect } from "react";
-import { DataRegistro } from "../redux/features/TablaRegistro/Thunk/DataRegistro";
+import { DataHistoricos } from "../redux/features/TablaRegistro/Thunk/DataRegistro";
 import { useForm } from "react-hook-form";
 import { exportToExcel } from "../services/ExportExel";
 import { Button } from "@mui/material";
 
-function DerivacionHistorico() {
 
-  const rows = useSelector(SelectData)
+function DerivacionHistorico() {
+  const rows = useSelector(SelectDataHistorico)
   const dispatch = useDispatch()
   const {register,watch}=useForm()
 
   useEffect(()=>{
-    dispatch(DataRegistro())
-  })
+    dispatch(DataHistoricos())
+  },[])
 
   const formatFechaCorreo = (fechaCorreo) => {
     const separar = fechaCorreo.split('T');
@@ -56,37 +56,39 @@ const HandelExportXLSX=()=>{
 return (  
   <>
   <div>
-    <h1 className="text-3xl uppercase font-bold text-center">TABLA DERIVACION HISTORICO</h1>
+    <h1 className="text-3xl uppercase font-bold text-center" >TABLA DERIVACION HISTORICO</h1>
   </div>
-    <h2>Filtros y descargas</h2>
-   <div className="flex item-center">
-    <section  className='flex items-center flex-wrap'>
+   <div className="flex item-center w-full ">
+    <section  className='flex item-center flex-wrap '>
+    <div>
      <p>Desde el:</p>
      <input type="date"  name="date"  className=' mb-2 ml-1 mr-1 border border-gray-200 outline-none py-2 px-8 rounded-lg'
           {...register('desdeEl',{required:true})}
           />
+    </div>
+    <div>
      <p>Hasta el:</p>
      <input type="date" name="date"  className=' mb-2 ml-1 mr-1 border border-gray-200 outline-none py-2 px-8 rounded-lg'
           {...register('hastaEl',{required:true})}
           />
-    
-    </section>
+    </div>
     <Button
         variant="contained"
         onClick={HandelExportXLSX}
         sx={{
-          marginBottom: '10px',
-          marginLeft:'10px',
-          marginRight:'1opx',
+          marginBottom: '8px',
+          marginLeft:'8px',
+          marginRight:'8px',
+          marginTop:'8px',
           bgcolor: '#0284c7',
           '&:hover': {
             bgcolor: '#0078c1',
           },
         }}
-      >
+        >
         Descargar en Excel
       </Button>
-      
+    </section>
    </div>
   <div>
     <DataGrid

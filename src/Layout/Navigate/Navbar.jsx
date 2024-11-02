@@ -94,6 +94,11 @@ function Navbar() {
               Derivacion Historico
               </Link>
             </li>
+            <li>
+              <Link to={'/EstadisticaMensual'} className={`block py-2 px-3 rounded md:p-0 ${Location.pathname === '/EstadisticaMensual' ? 'text-blue-700 dark:text-yellow-500' : 'text-gray-900 dark:text-white'}`}>
+              Estadistica Mensual
+              </Link>
+            </li>
           </ul>
         </div>
       </div>

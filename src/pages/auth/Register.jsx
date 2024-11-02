@@ -14,6 +14,7 @@ import { FetchAllAgencia, FetchAllJZ, FetchAllSuper } from '../../redux/features
 import Select from 'react-select';
 import { DataRegistro } from '../../redux/features/TablaRegistro/Thunk/DataRegistro';
 import LoadingHandler from '../../components/LoadingHandler';
+import { decryptData } from '../../utils/Encriptar';
 
 
 function Register() {
@@ -23,8 +24,11 @@ function Register() {
   const dniData = useSelector((state) => state.DataDni);
   const DataJZ = useSelector((stateJZ) => stateJZ.JefeZonal);
   const { status } = dniData;
-
   const [UpadateTable, SetUpadateTable] = useState(true);
+  const descrypstorage = decryptData(JSON.parse(localStorage.getItem('token')))
+  const d = descrypstorage;
+
+  
 
   useEffect(() => {
     dispatch(FetchAllJZ());
@@ -48,6 +52,8 @@ function Register() {
       setValue('verificacion',dniData.datoDni.verificado)
     }
   }, [dniData, setValue, reset]);
+  
+
 
   const onSubmit = (data) => {
     const EstructuraData={
@@ -61,11 +67,12 @@ function Register() {
     horaLlegadaCorreo: data?.horaLlegadaCorreo,
     fechaDesembolso:data?.fechaDesembolso,
     montoDesembolso:data?.montoDesembolsar,
-    Asesor:String(data?.DNIAsesor)
+    Asesor:String(data?.DNIAsesor),
+    Id_Usuario:d.Id_Usuario
     }
   
     const promise1 = dispatch(CreateDerivation(EstructuraData)).unwrap();
-    const promise2 =dispatch(CreateDerivationPHP({dni:EstructuraData.dni})).unwrap();
+    const promise2 = dispatch(CreateDerivationPHP({dni:EstructuraData.dni})).unwrap();
 
     const allPromise = Promise.all([promise1,promise2])
 

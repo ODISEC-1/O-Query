@@ -6,6 +6,7 @@ import { Toaster } from 'react-hot-toast';
 import PrivateRoute from "./services/PrivateRoute";
 import Navbar from "./Layout/Navigate/Navbar";
 import DerivacionHistorico from "./pages/DerivacionHistorico";
+import EstadisticaMensual from "./pages/EstadisticaMensual";
 
 
 
@@ -30,6 +31,11 @@ function App() {
             <DerivacionHistorico/>
           </PrivateRoute>
         
+        }/>
+        <Route path="/EstadisticaMensual" element={
+          <PrivateRoute>
+            <EstadisticaMensual/>
+          </PrivateRoute>
         }/>
     </Routes>
     </>

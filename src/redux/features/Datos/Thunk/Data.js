@@ -59,9 +59,9 @@ export const CreateDerivationPHP = createAsyncThunk('data/CreateDerivationPHP',
 
 )
 
-
   export const UpdateDerivacion = createAsyncThunk('data/UpdateDerivacion',
    async(dataUpdate,thunkAPI)=>{
+
     try {
       const Update = await axios.put(`https://derivationsystem.up.railway.app/api/Derivation/${dataUpdate.id}`, dataUpdate)
      const {data,status,statusText} = Update;

@@ -10,6 +10,5 @@ export default configureStore({
       DataDni: dataReducer,
       JefeZonal:DataSliceJZ,
       AuthLogin:AuthLogin
-    },
-    
+    }
 });

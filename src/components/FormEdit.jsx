@@ -37,7 +37,7 @@ const FormEdit = ({ data, close }) => {
     }
   });
 
-  // Mapped function for Select Options
+
   const mapOptions = (data, valueKey, labelKey) => {
     return data.map((item) => ({
       value: item[valueKey],
@@ -45,10 +45,11 @@ const FormEdit = ({ data, close }) => {
     }));
   };
 
-  // Submit handler
+
   const onSubmit = (formData) => {
     const EstructuraData = {
       id: formData.id,
+      Nombres:formData.Nombres,
       numero: formData.numero,
       agencia: formData.agencia,
       jefeZonal: formData.jefeZonal,
@@ -72,7 +73,7 @@ const FormEdit = ({ data, close }) => {
     });
   };
 
-  // Render the component
+
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       <Box sx={{ mb: 4 }}>
@@ -80,8 +81,22 @@ const FormEdit = ({ data, close }) => {
           Detalles del Cliente
         </Typography>
         <Box sx={{ mb: 2 }}>
-          <Typography variant="body1" sx={{ fontWeight: 'bold' }}>Nombres del Cliente:</Typography>
-          <Typography variant="body2">{data.Nombres}</Typography>
+          <Controller
+           name="Nombres"
+           control={control}
+           rules={{required:'El Nombre es obligatorio'}}
+           render={({field})=>(
+            <TextField
+             {...field}
+             label='Nombre cliente'
+             variant="outlined"
+             fullWidth
+             error={!!errors.Nombres}
+             helperText={errors.Nombres?.message}
+            />
+           )}
+          
+          />
         </Box>
         <Box sx={{ mb: 2 }}>
           <Typography variant="body1" sx={{ fontWeight: 'bold' }}>ID Registro:</Typography>
@@ -112,6 +127,7 @@ const FormEdit = ({ data, close }) => {
           />
         )}
       />
+
       <Controller
         name="numero"
         control={control}
