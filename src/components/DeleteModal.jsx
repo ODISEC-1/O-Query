@@ -33,7 +33,7 @@ const DeleteModal = ({ open, handleClose, onConfirm }) => {
                     <Button variant="contained" color="secondary" onClick={handleClose}>NO</Button>
                 </Box>
             </Box>
-        </Modal>
+        </Modal> 
     );
 };
 

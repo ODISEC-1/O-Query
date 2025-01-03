@@ -39,7 +39,7 @@ const TablaRegistro = ({ updateTable }) => {
 
   const handleButtonClick = async (row) => {
     const { id } = row;
-    const { data } = await axios.get(`https://derivationsystem.up.railway.app/api/Derivation/${id}`);
+    const { data } = await axios.get(`https://api-rena.onrender.com/api/Derivation/${id}`);
     setData(data);
     setModalOpen(true);
   };

@@ -8,7 +8,7 @@ export const FetchDataByDNI = createAsyncThunk(
   'data/fetchDataByDNI',
   async (dni, { rejectWithValue }) => {
     try {
-      const { data,status } = await axios.get(`https://derivationsystem.up.railway.app/api/Alldata/${dni}`);
+      const { data,status } = await axios.get(`https://api-rena.onrender.com/api/Alldata/${dni}`);
       if (data) {
       return data;
       }
