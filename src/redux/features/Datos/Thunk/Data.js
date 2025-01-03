@@ -34,7 +34,7 @@ export const FetchDataByDNI = createAsyncThunk(
     'data/CreateDerivation',
     async (dta, thunkAPI) => {
       try {
-        const createDeri = await axios.post('https://derivationsystem.up.railway.app/api/Derivation', dta);
+        const createDeri = await axios.post('https://api-rena.onrender.com/api/Derivation', dta);
 
         const { data, status, statusText, config } = createDeri;
         return { data, status, statusText, config }; 
@@ -49,7 +49,7 @@ export const FetchDataByDNI = createAsyncThunk(
 export const CreateDerivationPHP = createAsyncThunk('data/CreateDerivationPHP',
   async (dni,thunkAPI)=>{
     try {
-      const createDeriPHP= await axios.post('https://derivationsystem.up.railway.app/api/DerivacionPHP',dni)
+      const createDeriPHP= await axios.post('https://api-rena.onrender.com/api/DerivacionPHP',dni)
       return createDeriPHP.data;
     } catch (error) {
       console.error('Error post data:', error);
@@ -63,7 +63,7 @@ export const CreateDerivationPHP = createAsyncThunk('data/CreateDerivationPHP',
    async(dataUpdate,thunkAPI)=>{
 
     try {
-      const Update = await axios.put(`https://derivationsystem.up.railway.app/api/Derivation/${dataUpdate.id}`, dataUpdate)
+      const Update = await axios.put(`https://api-rena.onrender.com/api/Derivation/${dataUpdate.id}`, dataUpdate)
      const {data,status,statusText} = Update;
      return {data,status,statusText}
     } catch (error) {
@@ -77,7 +77,7 @@ export const CreateDerivationPHP = createAsyncThunk('data/CreateDerivationPHP',
 
   export const OneDerivation =createAsyncThunk('data/UpdateDerivacion',async(id)=>{
     try {
-      const {data} = await axios.get(`https://derivationsystem.up.railway.app/api/Derivation/${id}`)
+      const {data} = await axios.get(`https://api-rena.onrender.com/api/Derivation/${id}`)
       return data
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -90,7 +90,7 @@ export const CreateDerivationPHP = createAsyncThunk('data/CreateDerivationPHP',
     'data/DeleteDerivacion',
     async (id) => {
       try {
-        const response = await axios.delete(`https://derivationsystem.up.railway.app/api/Derivation/${id}`);
+        const response = await axios.delete(`https://api-rena.onrender.com/api/Derivation/${id}`);
         return response.data;
       } catch (error) {
         console.error('Error deleting data:', error);
