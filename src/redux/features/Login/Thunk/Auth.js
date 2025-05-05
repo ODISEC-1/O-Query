@@ -6,7 +6,7 @@ export const VerifyLogin = createAsyncThunk(
    'auth/login',
    async (credentials, { rejectWithValue }) => {
      try {
-       const response = await axios.post('https://api-rena.onrender.com/api/Login', credentials);
+       const response = await axios.post('https://api-rena-1.onrender.com/api/Login', credentials);
        const { token, datos,access } = response.data;
 
        const DT={

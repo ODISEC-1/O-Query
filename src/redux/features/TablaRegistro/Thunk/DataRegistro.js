@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const DataRegistro = createAsyncThunk('Registro/DataRegistro', async () => {
   try {
-    const { data } = await axios.get('https://api-rena.onrender.com/api/Derivation');
+    const { data } = await axios.get('https://api-rena-1.onrender.com/api/Derivation');
     const transformedData = data.map(item => {
     const datos ={
       id: item.Id_registro,  
@@ -31,7 +31,7 @@ export const DataRegistro = createAsyncThunk('Registro/DataRegistro', async () =
 export const DataHistoricos = createAsyncThunk('Registo/DataHistoricos',async () => {
   
     try {
-      const {data} = await axios.get('https://api-rena.onrender.com/api/DerivationHistory');
+      const {data} = await axios.get('https://api-rena-1.onrender.com/api/DerivationHistory');
       const transformedData = data.map(item => {
         const datos={
           id: item.Id_Registro_Deri,  
